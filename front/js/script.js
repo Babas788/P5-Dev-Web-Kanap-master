@@ -15,7 +15,7 @@ async function creationProduit() {
     for (let i = 0; i < mesProduits.length; i += 1) {
       const lien = document.createElement("a");
       document.getElementById("items").appendChild(lien);
-      lien.href = "product.html?id=${mesProduits[i]._id}";
+      lien.href = `./product.html?id=${mesProduits[i]._id}`;
 
       const mesArticles = document.createElement("article");
       lien.appendChild(mesArticles);
