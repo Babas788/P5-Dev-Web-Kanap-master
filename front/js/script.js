@@ -2,10 +2,10 @@
 kanapApi();
 
 creationProduit();
+
 async function kanapApi() {
   let produits = await fetch("http://localhost:3000/api/products");
   return produits.json();
-  console.log(produits);
 }
 
 //injection de mes cartes avec reprise d'API
