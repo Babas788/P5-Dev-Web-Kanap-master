@@ -12,7 +12,6 @@ async function kanapApi() {
 
 async function monProduit() {
   const insertion = await kanapApi().then((detail) => {
-    const image = detail.imageUrl;
     const couleur = detail.colors;
     const monId = detail._id;
 
