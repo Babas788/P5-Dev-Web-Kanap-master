@@ -12,6 +12,7 @@ async function kanapApi() {
 
 async function creationProduit() {
   const style = await kanapApi().then((mesProduits) => {
+    //  Boucle pour chaque élément
     for (let i = 0; i < mesProduits.length; i += 1) {
       const lien = document.createElement("a");
       document.getElementById("items").appendChild(lien);
