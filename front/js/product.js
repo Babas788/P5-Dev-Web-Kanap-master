@@ -12,9 +12,6 @@ async function kanapApi() {
 
 async function monProduit() {
   const insertion = await kanapApi().then((detail) => {
-    const couleur = detail.colors;
-    const monId = detail._id;
-
     const packShot = document.createElement("img");
     document.querySelector(".item__img").appendChild(packShot);
     packShot.src = detail.imageUrl;
@@ -28,6 +25,16 @@ async function monProduit() {
 
     const description = document.getElementById("description");
     description.innerHTML = detail.description;
+
+    const couleur = detail.colors;
+
+    couleur.forEach((color) => {
+      const option = document.createElement("option");
+      console.log(option);
+      document.getElementById("colors").appendChild(option);
+      option.value = color;
+      option.textContent = color;
+    });
   });
 }
 
