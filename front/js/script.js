@@ -1,38 +1,46 @@
-//récupération de l'API
-kanapApi();
+const url = "http://localhost:3000/api/products";
 
-creationProduit();
+fetch(url)
+  .then((response) => response.json())
+  .then((data) =>
+    //boucle pour injection de données API
+    data.forEach((data) => {
+      //creation du parent a pour lien
+      const link = document.createElement("a");
+      link.href = `./product.html?id=${data._id}`;
 
-async function kanapApi() {
-  let produits = await fetch("http://localhost:3000/api/products");
-  return produits.json();
-}
+      //déclaration de mes constantes
+      const article = document.createElement("article");
 
-//injection de mes cartes avec reprise d'API
+      const image = document.createElement("img");
 
-async function creationProduit() {
-  const style = await kanapApi().then((mesProduits) => {
-    //  Boucle pour chaque élément
-    for (let i = 0; i < mesProduits.length; i += 1) {
-      const lien = document.createElement("a");
-      document.getElementById("items").appendChild(lien);
-      lien.href = `./product.html?id=${mesProduits[i]._id}`;
+      const title = document.createElement("h3");
 
-      const mesArticles = document.createElement("article");
-      lien.appendChild(mesArticles);
+      const description = document.createElement("p");
 
-      const mesImages = document.createElement("img");
-      mesArticles.appendChild(mesImages);
-      mesImages.src = mesProduits[i].imageUrl;
-      mesImages.alt = mesProduits[i].altTxt;
+      //initiation de mes programmes en fonctions
+      function Child() {
+        document.getElementById("items").appendChild(link);
+        article.appendChild(image);
+        article.appendChild(description);
+        article.appendChild(title);
+        link.appendChild(article);
+      }
 
-      const mesTitres = document.createElement("h3");
-      mesArticles.appendChild(mesTitres);
-      mesTitres.innerHTML = mesProduits[i].name;
+      function insert() {
+        description.innerHTML = data.description;
+        title.innerHTML = data.name;
+        image.src = data.imageUrl;
+        image.alt = data.altTxt;
+      }
 
-      const mesDescriptions = document.createElement("p");
-      mesArticles.appendChild(mesDescriptions);
-      mesDescriptions.innerHTML = mesProduits[i].description;
-    }
-  });
-}
+      function classList() {
+        description.classList.add("productDescription");
+        title.classList.add("productName");
+      }
+
+      Child();
+      insert();
+      classList();
+    })
+  );

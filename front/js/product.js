@@ -5,38 +5,37 @@ const page = window.location.search;
 const url = new URLSearchParams(page);
 const id = url.get("id");
 
-async function kanapApi() {
-  let response = await fetch(`http://localhost:3000/api/products/${id}`);
-  return response.json();
-}
+const api = `http://localhost:3000/api/products/${id}`;
 
-async function monProduit() {
-  const insertion = await kanapApi().then((detail) => {
-    const packShot = document.createElement("img");
-    document.querySelector(".item__img").appendChild(packShot);
-    packShot.src = detail.imageUrl;
-    packShot.alt = detail.altTxt;
+fetch(api)
+  .then((response) => response.json())
+  .then((data) => {
+    const image = document.createElement("img");
 
-    const title = document.getElementById("title");
-    title.innerHTML = detail.name;
+    const couleur = data.colors;
 
-    const prix = document.getElementById("price");
-    prix.innerHTML = detail.price;
+    function child() {
+      document.querySelector(".item__img").appendChild(image);
+    }
 
-    const description = document.getElementById("description");
-    description.innerHTML = detail.description;
+    function insert() {
+      image.src = data.imageUrl;
+      document.getElementById("title").innerHTML = data.name;
+      document.getElementById("price").innerHTML = data.price;
+      document.getElementById("description").innerHTML = data.description;
+    }
 
-    const couleur = detail.colors;
+    function color() {
+      couleur.forEach((color) => {
+        const option = document.createElement("option");
+        console.log(option);
+        document.getElementById("colors").appendChild(option);
+        option.value = color;
+        option.textContent = color;
+      });
+    }
 
-    couleur.forEach((color) => {
-      const option = document.createElement("option");
-      console.log(option);
-      document.getElementById("colors").appendChild(option);
-      option.value = color;
-      option.textContent = color;
-    });
+    color();
+    insert();
+    child();
   });
-}
-
-kanapApi();
-monProduit();
