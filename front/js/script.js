@@ -7,10 +7,12 @@ fetch(url)
     data.forEach((data) => {
       //creation du parent a pour lien
       const link = document.createElement("a");
+      document.getElementById("items").appendChild(link);
       link.href = `./product.html?id=${data._id}`;
 
       //déclaration de mes constantes
       const article = document.createElement("article");
+      link.appendChild(article);
 
       const image = document.createElement("img");
 
@@ -19,28 +21,27 @@ fetch(url)
       const description = document.createElement("p");
 
       //initiation de mes programmes en fonctions
-      function Child() {
-        document.getElementById("items").appendChild(link);
-        article.appendChild(image);
-        article.appendChild(description);
-        article.appendChild(title);
-        link.appendChild(article);
-      }
 
-      function insert() {
-        description.innerHTML = data.description;
-        title.innerHTML = data.name;
+      function picture() {
+        document.createElement("img");
+        article.appendChild(image);
         image.src = data.imageUrl;
         image.alt = data.altTxt;
       }
 
-      function classList() {
-        description.classList.add("productDescription");
+      function myTitle() {
+        article.appendChild(title);
+        title.innerHTML = data.name;
         title.classList.add("productName");
       }
+      function myDescription() {
+        article.appendChild(description);
+        description.innerHTML = data.description;
+        description.classList.add("productDescription");
+      }
 
-      Child();
-      insert();
-      classList();
+      picture();
+      myTitle();
+      myDescription();
     })
   );
