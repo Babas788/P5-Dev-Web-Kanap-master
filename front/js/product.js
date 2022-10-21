@@ -9,33 +9,35 @@ const api = `http://localhost:3000/api/products/${id}`;
 
 fetch(api)
   .then((response) => response.json())
-  .then((data) => {
-    const image = document.createElement("img");
+  .then((data) => create(data));
 
-    const couleur = data.colors;
+function create(api) {
+  const image = document.createElement("img");
 
-    function child() {
-      document.querySelector(".item__img").appendChild(image);
-    }
+  const couleur = api.colors;
 
-    function insert() {
-      image.src = data.imageUrl;
-      document.getElementById("title").innerHTML = data.name;
-      document.getElementById("price").innerHTML = data.price;
-      document.getElementById("description").innerHTML = data.description;
-    }
+  function child() {
+    document.querySelector(".item__img").appendChild(image);
+  }
 
-    function color() {
-      couleur.forEach((color) => {
-        const option = document.createElement("option");
-        console.log(option);
-        document.getElementById("colors").appendChild(option);
-        option.value = color;
-        option.textContent = color;
-      });
-    }
+  function insert() {
+    image.src = api.imageUrl;
+    document.getElementById("title").innerHTML = api.name;
+    document.getElementById("price").innerHTML = api.price;
+    document.getElementById("description").innerHTML = api.description;
+  }
 
-    color();
-    insert();
-    child();
-  });
+  function color() {
+    couleur.forEach((color) => {
+      const option = document.createElement("option");
+      console.log(option);
+      document.getElementById("colors").appendChild(option);
+      option.value = color;
+      option.textContent = color;
+    });
+  }
+
+  color();
+  insert();
+  child();
+}
