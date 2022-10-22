@@ -5,26 +5,29 @@ const page = window.location.search;
 const url = new URLSearchParams(page);
 const id = url.get("id");
 
-const api = `http://localhost:3000/api/products/${id}`;
+const myUrl = `http://localhost:3000/api/products/${id}`;
 
-fetch(api)
+fetch(myUrl)
   .then((response) => response.json())
   .then((data) => create(data));
 
-function create(api) {
+function create(product) {
   const image = document.createElement("img");
+  const couleur = product.colors;
 
-  const couleur = api.colors;
+  insert(product);
+  child();
+  color();
 
   function child() {
     document.querySelector(".item__img").appendChild(image);
   }
 
-  function insert() {
-    image.src = api.imageUrl;
-    document.getElementById("title").innerHTML = api.name;
-    document.getElementById("price").innerHTML = api.price;
-    document.getElementById("description").innerHTML = api.description;
+  function insert(product) {
+    image.src = product.imageUrl;
+    document.getElementById("title").innerHTML = product.name;
+    document.getElementById("price").innerHTML = product.price;
+    document.getElementById("description").innerHTML = product.description;
   }
 
   function color() {
@@ -36,8 +39,4 @@ function create(api) {
       option.textContent = color;
     });
   }
-
-  color();
-  insert();
-  child();
 }

@@ -4,8 +4,8 @@ fetch(url)
   .then((response) => response.json())
   .then((data) => create(data));
 
-function create(api) {
-  api.forEach((api) => {
+function create(product) {
+  product.forEach((product) => {
     const link = document.createElement("a");
 
     const article = document.createElement("article");
@@ -16,32 +16,32 @@ function create(api) {
 
     const description = document.createElement("p");
 
-    function myLink() {
+    myLink(product);
+    myArticle(product);
+    picture(product);
+    myDescription(product);
+    myTitle(product);
+
+    function myLink(product) {
       document.getElementById("items").appendChild(link);
-      link.href = `./product.html?id=${api._id}`;
+      link.href = `./product.html?id=${product._id}`;
     }
 
     function myArticle() {
       link.appendChild(article);
     }
-    function picture() {
+    function picture(product) {
       article.appendChild(image);
-      image.src = api.imageUrl;
-      image.alt = api.altTxt;
+      image.src = product.imageUrl;
+      image.alt = product.altTxt;
     }
-    function myTitle() {
+    function myTitle(product) {
       article.appendChild(title);
-      title.innerHTML = api.name;
+      title.innerHTML = product.name;
     }
-    function myDescription() {
+    function myDescription(product) {
       article.appendChild(description);
-      description.innerHTML = api.description;
+      description.innerHTML = product.description;
     }
-
-    myLink();
-    myArticle();
-    picture();
-    myDescription();
-    myTitle();
   });
 }
