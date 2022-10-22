@@ -15,7 +15,6 @@ function create(product) {
     const title = document.createElement("h3");
 
     const description = document.createElement("p");
-
     myLink(product);
     myArticle(product);
     picture(product);
@@ -26,19 +25,21 @@ function create(product) {
       document.getElementById("items").appendChild(link);
       link.href = `./product.html?id=${product._id}`;
     }
-
-    function myArticle() {
+    function myArticle(product) {
       link.appendChild(article);
     }
+
     function picture(product) {
       article.appendChild(image);
       image.src = product.imageUrl;
       image.alt = product.altTxt;
     }
+
     function myTitle(product) {
       article.appendChild(title);
       title.innerHTML = product.name;
     }
+
     function myDescription(product) {
       article.appendChild(description);
       description.innerHTML = product.description;
