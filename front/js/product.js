@@ -7,7 +7,9 @@ const id = url.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
 
 // récupération de mon prix
-let myPrice = 0;
+let myPrice;
+let picture;
+let accessibility;
 
 fetch(myUrl)
   .then((response) => response.json())
@@ -16,15 +18,20 @@ fetch(myUrl)
 function create(product) {
   myPicture(product);
   insert(product);
-  const color = product.colors;
 
-  //récup prix
+  //récup data
+  const color = product.colors;
   myPrice = product.price;
+  picture = product.imageUrl;
+  accessibility = product.altTxt;
+
+  //Mes fonctions
 
   function myPicture(product) {
     const image = document.createElement("img");
     document.querySelector(".item__img").appendChild(image);
     image.src = product.imageUrl;
+    image.alt = product.altTxt;
   }
 
   function insert(product) {
@@ -50,6 +57,8 @@ const addBasket = document.getElementById("addToCart");
 addBasket.addEventListener("click", (e) => {
   const productColor = document.getElementById("colors").value;
   const productQuantity = document.getElementById("quantity").value;
+
+  dataBaket(productColor, productQuantity);
   if (
     productColor == null ||
     productColor == "" ||
@@ -57,17 +66,21 @@ addBasket.addEventListener("click", (e) => {
     productQuantity == 0
   ) {
     alert("veuillez selectionner une couleur et une quantité valide!");
+    return;
   }
 
   //récupération des données
+  function dataBaket(productColor, productQuantity) {
+    let myData = {
+      id: id,
+      color: productColor,
+      price: myPrice,
+      quantity: productQuantity,
+      picture,
+      accessibility,
+    };
 
-  let myData = {
-    id: id,
-    color: productColor,
-    price: myPrice,
-    quantity: productQuantity,
-  };
-
-  localStorage.setItem(productColor, JSON.stringify(myData));
-  window.location.href = "cart.html";
+    localStorage.setItem(productColor, JSON.stringify(myData));
+    window.location.href = "cart.html";
+  }
 });
