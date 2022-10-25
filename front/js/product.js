@@ -69,4 +69,5 @@ addBasket.addEventListener("click", (e) => {
   };
 
   localStorage.setItem(productColor, JSON.stringify(myData));
+  window.location.href = "cart.html";
 });
