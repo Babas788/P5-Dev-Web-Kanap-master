@@ -17,15 +17,15 @@ fetch(myUrl)
   .then((data) => create(data));
 
 function create(product) {
-  myPicture(product);
-  insert(product);
-
   //récup data
   const color = product.colors;
   myName = product.name;
   myPrice = product.price;
   picture = product.imageUrl;
   accessibility = product.altTxt;
+
+  myPicture(product);
+  insert(product);
 
   //Mes fonctions
 
@@ -70,20 +70,20 @@ addBasket.addEventListener("click", (e) => {
     alert("veuillez selectionner une couleur et une quantité valide!");
     return;
   }
-
-  //récupération des données
-  function dataBaket(productColor, productQuantity) {
-    let myData = {
-      id: id,
-      color: productColor,
-      price: myPrice,
-      quantity: productQuantity,
-      picture,
-      accessibility,
-      productTitle: myName,
-    };
-
-    localStorage.setItem(productColor, JSON.stringify(myData));
-    window.location.href = "cart.html";
-  }
 });
+
+//récupération des données
+function dataBaket(productColor, productQuantity) {
+  let myData = {
+    id: id,
+    color: productColor,
+    price: myPrice,
+    quantity: productQuantity,
+    picture,
+    accessibility,
+    productTitle: myName,
+  };
+
+  localStorage.setItem(productColor, JSON.stringify(myData));
+  window.location.href = "cart.html";
+}

@@ -72,7 +72,7 @@ apiTest.forEach((element) => {
     const input = document.createElement("input");
     settingDiv.appendChild(input);
     input.classList.add("itemQuantity");
-    (input.type = Number), (input.name = "itemquantity");
+    (input.type = "Number"), (input.name = "itemquantity");
     input.min = "1";
     input.max = "100";
     input.value = element.quantity;
@@ -87,10 +87,3 @@ apiTest.forEach((element) => {
     deleteItems.innerHTML = "supprimer";
   }
 });
-
-//accessibility: "Photo d'un canapé d'angle, vert, trois places";
-//color: "Red";
-//id: "055743915a544fde83cfdfc904935ee7";
-//picture: "http://localhost:3000/images/kanap03.jpeg";
-//price: 3199;
-//quantity: "2";

@@ -37,10 +37,12 @@ function create(product) {
     }
     function myTitle(product) {
       article.appendChild(title);
+      title.classList.add("productName");
       title.innerHTML = product.name;
     }
     function myDescription(product) {
       article.appendChild(description);
+      description.classList.add("productDescription");
       description.innerHTML = product.description;
     }
   });
