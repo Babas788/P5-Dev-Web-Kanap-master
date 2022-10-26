@@ -6,7 +6,7 @@ const url = new URLSearchParams(page);
 const id = url.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
 
-// récupération de mon prix
+// récupération de mes data
 let myPrice;
 let picture;
 let accessibility;
