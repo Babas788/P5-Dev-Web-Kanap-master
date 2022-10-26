@@ -10,6 +10,7 @@ const myUrl = `http://localhost:3000/api/products/${id}`;
 let myPrice;
 let picture;
 let accessibility;
+let myName;
 
 fetch(myUrl)
   .then((response) => response.json())
@@ -21,6 +22,7 @@ function create(product) {
 
   //récup data
   const color = product.colors;
+  myName = product.name;
   myPrice = product.price;
   picture = product.imageUrl;
   accessibility = product.altTxt;
@@ -78,6 +80,7 @@ addBasket.addEventListener("click", (e) => {
       quantity: productQuantity,
       picture,
       accessibility,
+      productTitle: myName,
     };
 
     localStorage.setItem(productColor, JSON.stringify(myData));
