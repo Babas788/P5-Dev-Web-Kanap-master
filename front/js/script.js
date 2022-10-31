@@ -1,49 +1,61 @@
-const url = "http://localhost:3000/api/products";
+let url = "http://localhost:3000/api/products";
 
 fetch(url)
   .then((response) => response.json())
-  .then((data) => create(data));
+  .then((products) => create(products));
 
-function create(product) {
-  product.forEach((product) => {
-    const link = document.createElement("a");
+function create(products) {
+  products.forEach((products) => {
+    const id = products._id;
+    const imageUrl = products.imageUrl;
+    const alt = products.altTxt;
+    const title = products.name;
+    const description = products.description;
 
-    const article = document.createElement("article");
-
-    const image = document.createElement("img");
-
-    const title = document.createElement("h3");
-
-    const description = document.createElement("p");
-
-    myLink(product);
-    myArticle(product);
-    picture(product);
-    myDescription(product);
-    myTitle(product);
-
-    function myLink(product) {
-      document.getElementById("items").appendChild(link);
-      link.href = `./product.html?id=${product._id}`;
-    }
-
-    function myArticle() {
-      link.appendChild(article);
-    }
-    function picture(product) {
-      article.appendChild(image);
-      image.src = product.imageUrl;
-      image.alt = product.altTxt;
-    }
-    function myTitle(product) {
-      article.appendChild(title);
-      title.classList.add("productName");
-      title.innerHTML = product.name;
-    }
-    function myDescription(product) {
-      article.appendChild(description);
-      description.classList.add("productDescription");
-      description.innerHTML = product.description;
-    }
+    const child = myLink(id);
+    const article = myArticle();
+    const image = myPicture(imageUrl, alt);
+    const thisTitle = myTitle(title);
+    const thisDescription = myDescription(description);
+    myChild(child, article, image, thisTitle, thisDescription);
   });
+}
+
+function myLink(id) {
+  const link = document.createElement("a");
+  link.href = `./product.html?id=${id}`;
+  return link;
+}
+
+function myChild(child, article, image, thisTitle, thisDescription) {
+  const items = document.getElementById("items");
+  items.appendChild(child);
+  child.appendChild(article);
+  article.appendChild(image);
+  article.appendChild(thisTitle);
+  article.appendChild(thisDescription);
+}
+
+function myArticle() {
+  const article = document.createElement("article");
+  return article;
+}
+
+function myPicture(imageUrl, alt) {
+  const image = document.createElement("img");
+  image.src = imageUrl;
+  image.alt = alt;
+  return image;
+}
+
+function myTitle(title) {
+  const prodTitle = document.createElement("h3");
+  prodTitle.innerHTML = title;
+  return prodTitle;
+}
+
+function myDescription(description) {
+  const prodDescription = document.createElement("p");
+  prodDescription.innerHTML = description;
+  return prodDescription;
 }

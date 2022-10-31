@@ -19,6 +19,7 @@ apiTest.forEach((element) => {
   picture(element);
   itemContentDiv(element);
   setting(element);
+  totalQuantity(element);
 
   function myArticle(element) {
     document.getElementById("cart__items").appendChild(article);
@@ -85,5 +86,13 @@ apiTest.forEach((element) => {
     settingDelete.appendChild(deleteItems);
     deleteItems.classList.add("deleteItem");
     deleteItems.innerHTML = "supprimer";
+  }
+
+  function totalQuantity(element) {
+    for (let i = 0; i < totalQuantity.length; i++) {
+      const totalQuantity = (document.getElementById(
+        "totalQuantity"
+      ).innerHTML = element.quantity);
+    }
   }
 });
