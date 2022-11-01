@@ -97,8 +97,8 @@ function settings(item) {
   delet.classList.add("deleteItem");
   delet.innerHTML = "supprimer";
 
-  div.appendChild(divDelet);
   div.appendChild(quantity);
+  div.appendChild(divDelet);
   quantity.appendChild(qte);
   quantity.appendChild(input);
   divDelet.appendChild(delet);
