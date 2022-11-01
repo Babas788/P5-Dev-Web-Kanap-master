@@ -1,17 +1,16 @@
 const apiTest = [];
+
 myCash();
 
-console.log(apiTest);
-apiTest.forEach((item) => create(item));
-
 function myCash() {
-  const cash = localStorage.length;
-  for (let i = 0; i < cash; i++) {
+  const basket = localStorage.length;
+  for (let i = 0; i < basket; i++) {
     const item = localStorage.getItem(localStorage.key(i));
     const object = JSON.parse(item);
     apiTest.push(object);
   }
 }
+apiTest.forEach((item) => create(item));
 
 function create(item) {
   const thisArticle = article(item);
@@ -25,7 +24,10 @@ function create(item) {
 
   const setting = settings(item);
   thisArticle.appendChild(setting);
+  cartQuantity();
+  cartPrice();
 }
+//creation de la carte du panier
 
 function createArticle(thisArticle) {
   document.getElementById("cart__items").appendChild(thisArticle);
@@ -64,7 +66,7 @@ function cartContent(item) {
   color.textContent = item.color;
 
   const price = document.createElement("p");
-  price.textContent = item.price;
+  price.textContent = item.price + "€";
 
   description.appendChild(name);
   description.appendChild(color);
@@ -72,6 +74,8 @@ function cartContent(item) {
   div.appendChild(description);
   return div;
 }
+
+//creation du détail du panier
 
 function settings(item) {
   const div = document.createElement("div");
@@ -81,7 +85,7 @@ function settings(item) {
   quantity.classList.add("cart__item__content__settings__quantity");
 
   const qte = document.createElement("p");
-  qte.textContent = item.quantity;
+  qte.innerHTML = "Qté : ";
 
   const input = document.createElement("input");
   input.classList.add("itemQuantity");
@@ -89,6 +93,7 @@ function settings(item) {
   input.min = "1";
   input.max = "100";
   input.value = item.quantity;
+  input.addEventListener("input", () => changeDetails(item.id, input.value));
 
   const divDelet = document.createElement("div");
   divDelet.classList.add("cart__item__content__settings__delete");
@@ -103,4 +108,33 @@ function settings(item) {
   quantity.appendChild(input);
   divDelet.appendChild(delet);
   return div;
+}
+
+// Adapation du total du panier
+
+function cartPrice(item) {
+  let total = 0;
+  const price = document.getElementById("totalPrice");
+  apiTest.forEach((item) => {
+    const totalPrice = item.price * item.quantity;
+    total += totalPrice;
+  });
+  price.innerHTML = total;
+}
+
+function cartQuantity(item) {
+  let total = 0;
+  const quantity = document.getElementById("totalQuantity");
+  apiTest.forEach((item) => {
+    const totalQuantity = item.quantity;
+    total = totalQuantity;
+  });
+  quantity.innerHTML = total;
+}
+
+function changeDetails(id, newValue) {
+  const changeMyBasket = apiTest.find((item) => item.id === id);
+  changeMyBasket.quantity = Number(newValue);
+  cartPrice();
+  cartQuantity();
 }
