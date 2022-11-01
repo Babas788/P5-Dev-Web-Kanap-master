@@ -1,98 +1,106 @@
 const apiTest = [];
 myCash();
 
+console.log(apiTest);
+apiTest.forEach((item) => create(item));
+
 function myCash() {
-  for (let i = 0; i < localStorage.length; i++) {
-    const basket = localStorage.getItem(localStorage.key(i));
-    const object = JSON.parse(basket);
+  const cash = localStorage.length;
+  for (let i = 0; i < cash; i++) {
+    const item = localStorage.getItem(localStorage.key(i));
+    const object = JSON.parse(item);
     apiTest.push(object);
   }
-
-  console.log(apiTest);
 }
 
-apiTest.forEach((element) => {
-  const article = document.createElement("article");
-  const image = document.createElement("img");
+function create(item) {
+  const thisArticle = article(item);
+  createArticle(thisArticle);
 
-  myArticle(element);
-  picture(element);
-  itemContentDiv(element);
-  setting(element);
-  totalQuantity(element);
+  const myDiv = picture(item);
+  thisArticle.appendChild(myDiv);
 
-  function myArticle(element) {
-    document.getElementById("cart__items").appendChild(article);
-    article.dataset.id = element.id;
-    article.dataset.color = element.color;
-  }
+  const myCart = cartContent(item);
+  thisArticle.appendChild(myCart);
 
-  function picture(element) {
-    const myDiv = document.createElement("div");
-    article.appendChild(myDiv);
-    myDiv.classList.add("cart__item__img");
-    myDiv.appendChild(image);
-    image.src = element.picture;
-  }
+  const setting = settings(item);
+  thisArticle.appendChild(setting);
+}
 
-  function itemContentDiv(element) {
-    const myDiv = document.createElement("div");
-    article.appendChild(myDiv);
-    myDiv.classList.add("cart__item__content");
+function createArticle(thisArticle) {
+  document.getElementById("cart__items").appendChild(thisArticle);
+}
 
-    const settingDiv = document.createElement("div");
-    myDiv.appendChild(settingDiv);
-    settingDiv.classList.add("cart__item__content__description");
+function article(item) {
+  const myArticle = document.createElement("article");
+  myArticle.classList.add("cart__item");
+  myArticle.dataset.id = item.id;
+  myArticle.dataset.color = item.color;
+  return myArticle;
+}
 
-    const productName = document.createElement("h2");
-    settingDiv.appendChild(productName);
-    productName.innerHTML = element.productTitle;
+function picture(item) {
+  const divImage = document.createElement("div");
+  divImage.classList.add("cart__item__img");
+  const myImage = document.createElement("img");
+  myImage.src = item.picture;
+  myImage.alt = item.accessibility;
 
-    const productColor = document.createElement("p");
-    settingDiv.appendChild(productColor);
-    productColor.innerHTML = element.color;
+  divImage.appendChild(myImage);
+  return divImage;
+}
 
-    const productPrice = document.createElement("p");
-    settingDiv.appendChild(productPrice);
-    productPrice.innerHTML = element.price;
-  }
+function cartContent(item) {
+  const div = document.createElement("div");
+  div.classList.add("cart__item__content");
 
-  function setting(element) {
-    const myDiv = document.createElement("div");
-    article.appendChild(myDiv);
-    myDiv.classList.add("cart__item__content__settings");
+  const description = document.createElement("div");
+  description.classList.add("cart__item__content__description");
 
-    const settingDiv = document.createElement("div");
-    myDiv.appendChild(settingDiv);
-    settingDiv.classList.add("cart__item__content__settings__quantity");
+  const name = document.createElement("h2");
+  name.textContent = item.productTitle;
 
-    const productQuantity = document.createElement("p");
-    settingDiv.appendChild(productQuantity);
-    productQuantity.innerHTML = element.quantity;
+  const color = document.createElement("p");
+  color.textContent = item.color;
 
-    const input = document.createElement("input");
-    settingDiv.appendChild(input);
-    input.classList.add("itemQuantity");
-    (input.type = "Number"), (input.name = "itemquantity");
-    input.min = "1";
-    input.max = "100";
-    input.value = element.quantity;
+  const price = document.createElement("p");
+  price.textContent = item.price;
 
-    const settingDelete = document.createElement("div");
-    myDiv.appendChild(settingDelete);
-    settingDelete.classList.add("cart__item__content__settings__delete");
+  description.appendChild(name);
+  description.appendChild(color);
+  description.appendChild(price);
+  div.appendChild(description);
+  return div;
+}
 
-    const deleteItems = document.createElement("p");
-    settingDelete.appendChild(deleteItems);
-    deleteItems.classList.add("deleteItem");
-    deleteItems.innerHTML = "supprimer";
-  }
+function settings(item) {
+  const div = document.createElement("div");
+  div.classList.add("cart__item__content__settings");
 
-  function totalQuantity(element) {
-    for (let i = 0; i < totalQuantity.length; i++) {
-      const totalQuantity = (document.getElementById(
-        "totalQuantity"
-      ).innerHTML = element.quantity);
-    }
-  }
-});
+  const quantity = document.createElement("div");
+  quantity.classList.add("cart__item__content__settings__quantity");
+
+  const qte = document.createElement("p");
+  qte.textContent = item.quantity;
+
+  const input = document.createElement("input");
+  input.classList.add("itemQuantity");
+  (input.type = "Number"), (input.name = "itemquantity");
+  input.min = "1";
+  input.max = "100";
+  input.value = item.quantity;
+
+  const divDelet = document.createElement("div");
+  divDelet.classList.add("cart__item__content__settings__delete");
+
+  const delet = document.createElement("p");
+  delet.classList.add("deleteItem");
+  delet.innerHTML = "supprimer";
+
+  div.appendChild(divDelet);
+  div.appendChild(quantity);
+  quantity.appendChild(qte);
+  quantity.appendChild(input);
+  divDelet.appendChild(delet);
+  return div;
+}
