@@ -27,27 +27,25 @@ function create(product) {
   myPicture(product);
   insert(product);
 
-  //Mes fonctions
-
-  function myPicture(product) {
-    const image = document.createElement("img");
-    document.querySelector(".item__img").appendChild(image);
-    image.src = product.imageUrl;
-    image.alt = product.altTxt;
-  }
-
-  function insert(product) {
-    document.getElementById("title").innerHTML = product.name;
-    document.getElementById("price").innerHTML = product.price;
-    document.getElementById("description").innerHTML = product.description;
-  }
-
   color.forEach((color) => {
     const option = document.createElement("option");
     document.getElementById("colors").appendChild(option);
     option.value = color;
     option.textContent = color;
   });
+}
+
+function myPicture(product) {
+  const image = document.createElement("img");
+  document.querySelector(".item__img").appendChild(image);
+  image.src = product.imageUrl;
+  image.alt = product.altTxt;
+}
+
+function insert(product) {
+  document.getElementById("title").innerHTML = product.name;
+  document.getElementById("price").innerHTML = product.price;
+  document.getElementById("description").innerHTML = product.description;
 }
 
 // récupération données bouton panier
@@ -62,10 +60,10 @@ addBasket.addEventListener("click", (e) => {
 
   dataBaket(productColor, productQuantity);
   if (
-    productColor == null ||
-    productColor == "" ||
-    productQuantity == null ||
-    productQuantity == 0
+    productColor === null ||
+    productColor === "" ||
+    productQuantity === null ||
+    productQuantity === 0
   ) {
     alert("veuillez selectionner une couleur et une quantité valide!");
     return;

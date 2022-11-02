@@ -62,11 +62,11 @@ function cartContent(item) {
   const name = document.createElement("h2");
   name.textContent = item.productTitle;
 
-  const color = document.createElement("p");
-  color.textContent = item.color;
-
   const price = document.createElement("p");
   price.textContent = item.price + "€";
+
+  const color = document.createElement("p");
+  color.textContent = item.color;
 
   description.appendChild(name);
   description.appendChild(color);
@@ -93,7 +93,9 @@ function settings(item) {
   input.min = "1";
   input.max = "100";
   input.value = item.quantity;
-  input.addEventListener("input", () => changeDetails(item.id, input.value));
+  input.addEventListener("change", () =>
+    changeDetails(item.id, input.value, item)
+  );
 
   const divDelet = document.createElement("div");
   divDelet.classList.add("cart__item__content__settings__delete");
@@ -101,6 +103,7 @@ function settings(item) {
   const delet = document.createElement("p");
   delet.classList.add("deleteItem");
   delet.innerHTML = "supprimer";
+  delet.addEventListener("click", () => deleteProduct(item));
 
   div.appendChild(quantity);
   div.appendChild(divDelet);
@@ -127,14 +130,20 @@ function cartQuantity(item) {
   const quantity = document.getElementById("totalQuantity");
   apiTest.forEach((item) => {
     const totalQuantity = item.quantity;
-    total = totalQuantity;
+    total += totalQuantity;
   });
   quantity.innerHTML = total;
 }
 
-function changeDetails(id, newValue) {
+function changeDetails(id, newValue, item) {
   const changeMyBasket = apiTest.find((item) => item.id === id);
   changeMyBasket.quantity = Number(newValue);
   cartPrice();
   cartQuantity();
+  newData(item);
+}
+
+function newData(item) {
+  const myData = JSON.stringify(item);
+  localStorage.setItem(item.id, myData);
 }
