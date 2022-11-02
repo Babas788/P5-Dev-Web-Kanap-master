@@ -24,8 +24,6 @@ function create(item) {
 
   const setting = settings(item);
   thisArticle.appendChild(setting);
-  cartQuantity();
-  cartPrice();
 }
 //creation de la carte du panier
 
@@ -138,8 +136,8 @@ function cartQuantity(item) {
 function changeDetails(id, newValue, item) {
   const changeMyBasket = apiTest.find((item) => item.id === id);
   changeMyBasket.quantity = Number(newValue);
-  cartPrice();
-  cartQuantity();
+  cartPrice(item);
+  cartQuantity(item);
   newData(item);
 }
 
