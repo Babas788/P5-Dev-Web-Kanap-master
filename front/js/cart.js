@@ -1,8 +1,12 @@
-const myBasket = localStorage.length;
-for (let i = 0; i < myBasket; i++) {
-  const myKey = localStorage.getItem(localStorage.key(i));
-  const product = JSON.parse(myKey);
-  product.forEach((item) => create(item));
+saveBasket();
+
+function saveBasket() {
+  const myBasket = localStorage.length;
+  for (let i = 0; i < myBasket; i++) {
+    const myKey = localStorage.getItem(localStorage.key(i));
+    const product = JSON.parse(myKey);
+    product.forEach((item) => create(item));
+  }
 }
 
 function create(item) {
@@ -109,7 +113,6 @@ function itemSetting(item, product) {
   inputQuantity.type = "Number";
   inputQuantity.name = "itemQuantity";
   inputQuantity.value = item.quantity;
-
   return div;
 }
 
