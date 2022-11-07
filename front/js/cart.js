@@ -1,12 +1,8 @@
-saveBasket();
-
-function saveBasket() {
-  const myBasket = localStorage.length;
-  for (let i = 0; i < myBasket; i++) {
-    const myKey = localStorage.getItem(localStorage.key(i));
-    const product = JSON.parse(myKey);
-    product.forEach((item) => create(item));
-  }
+const myBasket = localStorage.length;
+for (let i = 0; i < myBasket; i++) {
+  const myKey = localStorage.getItem(localStorage.key(i));
+  const product = JSON.parse(myKey);
+  product.forEach((item) => create(item));
 }
 
 function create(item) {
@@ -92,7 +88,7 @@ function productPrice(item) {
   return prodPrice;
 }
 
-function itemSetting(item, product) {
+function itemSetting(item) {
   const div = document.createElement("div");
   div.classList.add("cart__item__content__settings");
 
@@ -108,11 +104,11 @@ function itemSetting(item, product) {
   inputQuantity.classList.add("itemQuantity");
   detailDiv.appendChild(inputQuantity);
 
-  inputQuantity.ariaValueMax = "100";
-  inputQuantity.ariaValueMin = "1";
+  inputQuantity.max = "100";
+  inputQuantity.min = "1";
+  inputQuantity.value = item.quantity;
   inputQuantity.type = "Number";
   inputQuantity.name = "itemQuantity";
-  inputQuantity.value = item.quantity;
   return div;
 }
 
