@@ -1,8 +1,9 @@
-// récupération id
 const page = window.location.search;
 const url = new URLSearchParams(page);
 const id = url.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
+
+const numberOfProduct = document.getElementById("quantity");
 
 fetch(myUrl)
   .then((response) => response.json())
@@ -51,30 +52,57 @@ function myColor(product) {
 
 function cart(product) {
   const myBasket = document.getElementById("addToCart");
+
   myBasket.addEventListener("click", () => {
-    const quantity = document.getElementById("quantity").value;
-    const colors = document.getElementById("colors").value;
+    let quantity = numberOfProduct.value;
+    let colors = document.getElementById("colors").value;
 
     let basket = {
       myId: id,
       quantity,
       colors,
-      productPrice: product.price,
-      image: product.imageUrl,
-      productDescription: product.description,
-      productName: product.name,
-      alt: product.altTxt,
     };
 
-    let data = JSON.parse(localStorage.getItem("basket"));
-    if (data) {
-      data.push(basket);
-      localStorage.setItem("basket", JSON.stringify(data));
-    } else {
-      data = [];
-      data.push(basket);
-      localStorage.setItem("basket", JSON.stringify(data));
+    if (
+      colors === null ||
+      colors === "" ||
+      quantity === null ||
+      quantity === "0"
+    ) {
+      alert("Veuillez selectionner une couleur et/ou une quantité valide!");
+      return;
     }
-    window.location.href = "cart.html";
+
+    let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
+
+    if (productInLocalStorage) {
+      const recherche = productInLocalStorage.find(
+        (element) => element.myId === id && element.colors === colors
+      );
+      if (recherche) {
+        let newQuantity =
+          parseInt(basket.quantity) + parseInt(recherche.quantity);
+        recherche.quantity = newQuantity;
+        localStorage.setItem(
+          "productCart",
+          JSON.stringify(productInLocalStorage)
+        );
+      } else {
+        productInLocalStorage.push(basket);
+        localStorage.setItem(
+          "productCart",
+          JSON.stringify(productInLocalStorage)
+        );
+        window.location.href = `cart.html?id=${id}`;
+      }
+    } else {
+      productInLocalStorage = [];
+      productInLocalStorage.push(basket);
+      localStorage.setItem(
+        "productCart",
+        JSON.stringify(productInLocalStorage)
+      );
+      window.location.href = `cart.html?id=${id}`;
+    }
   });
 }

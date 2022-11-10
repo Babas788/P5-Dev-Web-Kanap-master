@@ -1,15 +1,23 @@
-const myBasket = localStorage.length;
-for (let i = 0; i < myBasket; i++) {
-  const myKey = localStorage.getItem(localStorage.key(i));
-  const product = JSON.parse(myKey);
-  product.forEach((item) => create(item));
+let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
+let priceOfBasket = [];
+let quantityOfProduct = [];
+
+dataApi(productInLocalStorage);
+
+function dataApi(productInLocalStorage) {
+  productInLocalStorage.forEach((item) => {
+    const myUrl = `http://localhost:3000/api/products/${item.myId}`;
+    fetch(myUrl)
+      .then((response) => response.json())
+      .then((product) => create(product, item));
+  });
 }
 
-function create(item) {
+function create(product, item) {
   const article = articleProduct(item);
   insert(article);
 
-  const image = picture(item);
+  const image = picture(product);
   article.appendChild(image);
 
   const content = itemContent();
@@ -18,13 +26,10 @@ function create(item) {
   const itemDescription = productDescription();
   content.appendChild(itemDescription);
 
-  const productName = title(item);
+  const productName = title(product);
   itemDescription.appendChild(productName);
 
-  const color = productColor(item);
-  itemDescription.appendChild(color);
-
-  const price = productPrice(item);
+  const price = productPrice(product);
   itemDescription.appendChild(price);
 
   const settings = itemSetting(item);
@@ -32,6 +37,9 @@ function create(item) {
 
   const deleteItem = deleteProduct();
   article.appendChild(deleteItem);
+
+  priceBasket(item, product);
+  quantityOfBasket(item);
 }
 
 function insert(article) {
@@ -46,14 +54,14 @@ function articleProduct(item) {
   return article;
 }
 
-function picture(item) {
+function picture(product) {
   const pictureDiv = document.createElement("div");
   pictureDiv.classList.add("cart__item__img");
 
   const imageProduct = document.createElement("img");
   pictureDiv.appendChild(imageProduct);
-  imageProduct.src = item.image;
-  imageProduct.alt = item.alt;
+  imageProduct.src = product.imageUrl;
+  imageProduct.alt = product.altTxt;
 
   return pictureDiv;
 }
@@ -70,21 +78,15 @@ function productDescription() {
   return description;
 }
 
-function title(item) {
+function title(product) {
   const name = document.createElement("h2");
-  name.textContent = item.productName;
+  name.textContent = product.name;
   return name;
 }
 
-function productColor(item) {
-  const color = document.createElement("p");
-  color.textContent = item.colors;
-  return color;
-}
-
-function productPrice(item) {
+function productPrice(product) {
   const prodPrice = document.createElement("p");
-  prodPrice.textContent = item.productPrice;
+  prodPrice.textContent = product.price;
   return prodPrice;
 }
 
@@ -109,6 +111,7 @@ function itemSetting(item) {
   inputQuantity.value = item.quantity;
   inputQuantity.type = "Number";
   inputQuantity.name = "itemQuantity";
+
   return div;
 }
 
@@ -122,4 +125,22 @@ function deleteProduct() {
   settingsDelete.appendChild(deleteItem);
 
   return settingsDelete;
+}
+
+function quantityOfBasket(item) {
+  const productQuantity = item.quantity;
+  quantityOfProduct.push(parseInt(productQuantity));
+  const reducer = (accumulator, curr) => accumulator + curr;
+  const totQuantity = quantityOfProduct.reduce(reducer);
+  const totalQuantity = document.getElementById("totalQuantity");
+  totalQuantity.textContent = totQuantity;
+}
+
+function priceBasket(item, product) {
+  const totPrice = item.quantity * product.price;
+  priceOfBasket.push(totPrice);
+  const reducer = (accumulator, curr) => accumulator + curr;
+  const totalPrice = priceOfBasket.reduce(reducer);
+  const priceBasket = document.getElementById("totalPrice");
+  priceBasket.textContent = totalPrice;
 }
