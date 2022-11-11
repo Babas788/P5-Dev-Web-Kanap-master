@@ -35,8 +35,8 @@ function create(product, item) {
   const settings = itemSetting(item);
   article.appendChild(settings);
 
-  const deleteItem = deleteProduct();
-  article.appendChild(deleteItem);
+  const delet = deleteProduct(item);
+  article.appendChild(delet);
 
   priceBasket(item, product);
   quantityOfBasket(item);
@@ -111,11 +111,16 @@ function itemSetting(item) {
   inputQuantity.value = item.quantity;
   inputQuantity.type = "Number";
   inputQuantity.name = "itemQuantity";
-
+  inputQuantity.addEventListener("change", () => {
+    const id = item.myId;
+    const itemId = productInLocalStorage.find((item) => item.myId === id);
+    itemId.quantity = inputQuantity.value;
+    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+  });
   return div;
 }
 
-function deleteProduct() {
+function deleteProduct(item) {
   const settingsDelete = document.createElement("div");
   settingsDelete.classList.add("cart__item__content__settings__delete");
 
