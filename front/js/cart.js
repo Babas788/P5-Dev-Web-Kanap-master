@@ -116,7 +116,9 @@ function itemSetting(item) {
     const itemId = productInLocalStorage.find((item) => item.myId === id);
     itemId.quantity = inputQuantity.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+    location.reload();
   });
+
   return div;
 }
 
@@ -127,6 +129,18 @@ function deleteProduct(item) {
   const deleteItem = document.createElement("p");
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Supprimer";
+  deleteItem.addEventListener("click", () => {
+    let id = item.myId;
+    let color = item.colors;
+
+    productInLocalStorage = productInLocalStorage.filter(
+      (el) => el.myId !== id || el.colors !== color
+    );
+
+    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+    location.reload();
+  });
+
   settingsDelete.appendChild(deleteItem);
 
   return settingsDelete;
