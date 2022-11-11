@@ -1,10 +1,16 @@
+// récupération de mon localStorage
+
 let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
+
+//Creation de tableau pour modification depuis notre page panier
 let priceOfBasket = [];
 let quantityOfProduct = [];
 
+// utilisation de la méthode Fetch afin de récupérer les informations manquantes de nos produits depuis l'API
 dataApi(productInLocalStorage);
 
 function dataApi(productInLocalStorage) {
+  // utilisation d'une boucle pour chaque produit (récuparation grace à l'id depuis le localStorage)
   productInLocalStorage.forEach((item) => {
     const myUrl = `http://localhost:3000/api/products/${item.myId}`;
     fetch(myUrl)
@@ -13,6 +19,7 @@ function dataApi(productInLocalStorage) {
   });
 }
 
+// creation de la fonction générale afin de mettre en page et faire passer les arguments
 function create(product, item) {
   const article = articleProduct(item);
   insert(article);
@@ -42,6 +49,7 @@ function create(product, item) {
   quantityOfBasket(item);
 }
 
+// mise en page des produits
 function insert(article) {
   document.getElementById("cart__items").appendChild(article);
 }
@@ -111,6 +119,8 @@ function itemSetting(item) {
   inputQuantity.value = item.quantity;
   inputQuantity.type = "Number";
   inputQuantity.name = "itemQuantity";
+
+  // modification de quantité grace à la comparaison d'ID puis chargement de la nouvelle quantité
   inputQuantity.addEventListener("change", () => {
     const id = item.myId;
     const itemId = productInLocalStorage.find((item) => item.myId === id);
@@ -118,7 +128,6 @@ function itemSetting(item) {
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
     location.reload();
   });
-
   return div;
 }
 
@@ -129,23 +138,24 @@ function deleteProduct(item) {
   const deleteItem = document.createElement("p");
   deleteItem.classList.add("deleteItem");
   deleteItem.textContent = "Supprimer";
+
+  // modification de quantité grace à la comparaison d'ID puis chargement de la nouvelle quantité
   deleteItem.addEventListener("click", () => {
     let id = item.myId;
     let color = item.colors;
 
     productInLocalStorage = productInLocalStorage.filter(
-      (el) => el.myId !== id || el.colors !== color
+      (item) => item.myId !== id || item.colors !== color
     );
 
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
     location.reload();
   });
-
   settingsDelete.appendChild(deleteItem);
-
   return settingsDelete;
 }
 
+// mise à jour de la quantité globale grace à l'accumulation
 function quantityOfBasket(item) {
   const productQuantity = item.quantity;
   quantityOfProduct.push(parseInt(productQuantity));
@@ -154,6 +164,8 @@ function quantityOfBasket(item) {
   const totalQuantity = document.getElementById("totalQuantity");
   totalQuantity.textContent = totQuantity;
 }
+
+// mise à jour du prix global grace à l'accumulation
 
 function priceBasket(item, product) {
   const totPrice = item.quantity * product.price;
