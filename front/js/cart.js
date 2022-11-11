@@ -22,31 +22,27 @@ function dataApi(productInLocalStorage) {
 // creation de la fonction générale afin de mettre en page et faire passer les arguments
 function create(product, item) {
   const article = articleProduct(item);
-  insert(article);
-
   const image = picture(product);
-  article.appendChild(image);
-
   const content = itemContent();
-  article.appendChild(content);
-
   const itemDescription = productDescription();
-  content.appendChild(itemDescription);
-
   const productName = title(product);
-  itemDescription.appendChild(productName);
-
   const price = productPrice(product);
-  itemDescription.appendChild(price);
-
   const settings = itemSetting(item);
-  article.appendChild(settings);
-
   const delet = deleteProduct(item);
-  article.appendChild(delet);
+  const color = productColor(item);
 
   priceBasket(item, product);
   quantityOfBasket(item);
+
+  insert(article);
+  article.appendChild(image);
+  article.appendChild(content);
+  content.appendChild(itemDescription);
+  itemDescription.appendChild(productName);
+  itemDescription.appendChild(color);
+  itemDescription.appendChild(price);
+  article.appendChild(settings);
+  article.appendChild(delet);
 }
 
 // mise en page des produits
@@ -90,6 +86,12 @@ function title(product) {
   const name = document.createElement("h2");
   name.textContent = product.name;
   return name;
+}
+
+function productColor(item) {
+  const color = document.createElement("p");
+  color.textContent = item.colors;
+  return color;
 }
 
 function productPrice(product) {
@@ -147,9 +149,9 @@ function deleteProduct(item) {
     productInLocalStorage = productInLocalStorage.filter(
       (item) => item.myId !== id || item.colors !== color
     );
-
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
     location.reload();
+    alert("Le produit a bien été supprimé de votre panier!");
   });
   settingsDelete.appendChild(deleteItem);
   return settingsDelete;
@@ -157,21 +159,30 @@ function deleteProduct(item) {
 
 // mise à jour de la quantité globale grace à l'accumulation
 function quantityOfBasket(item) {
+  const totalQuantity = document.getElementById("totalQuantity");
   const productQuantity = item.quantity;
+
   quantityOfProduct.push(parseInt(productQuantity));
+
   const reducer = (accumulator, curr) => accumulator + curr;
   const totQuantity = quantityOfProduct.reduce(reducer);
-  const totalQuantity = document.getElementById("totalQuantity");
+
   totalQuantity.textContent = totQuantity;
 }
 
 // mise à jour du prix global grace à l'accumulation
 
 function priceBasket(item, product) {
+  const priceBasket = document.getElementById("totalPrice");
+
   const totPrice = item.quantity * product.price;
+
   priceOfBasket.push(totPrice);
+
   const reducer = (accumulator, curr) => accumulator + curr;
   const totalPrice = priceOfBasket.reduce(reducer);
-  const priceBasket = document.getElementById("totalPrice");
+
   priceBasket.textContent = totalPrice;
 }
+
+// formulaire de saisie

@@ -87,6 +87,7 @@ function cart(product) {
           "productCart",
           JSON.stringify(productInLocalStorage)
         );
+        window.location.href = `cart.html?id=${id}`;
       } else {
         productInLocalStorage.push(basket);
         localStorage.setItem(
