@@ -100,7 +100,7 @@ function productPrice(product) {
   return prodPrice;
 }
 
-function itemSetting(item) {
+function itemSetting(item, product) {
   const div = document.createElement("div");
   div.classList.add("cart__item__content__settings");
 
@@ -128,8 +128,13 @@ function itemSetting(item) {
     const itemId = productInLocalStorage.find((item) => item.myId === id);
     itemId.quantity = inputQuantity.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+
+    const totalQuantity = document.getElementById("totalQuantity");
+    totalQuantity.textContent = itemId.quantity;
+
     location.reload();
   });
+
   return div;
 }
 
