@@ -27,7 +27,7 @@ function create(product, item) {
   const itemDescription = productDescription();
   const productName = title(product);
   const price = productPrice(product);
-  const settings = itemSetting(item);
+  const settings = itemSetting(item, product);
   const delet = deleteProduct(item);
   const color = productColor(item);
 
@@ -124,15 +124,19 @@ function itemSetting(item, product) {
 
   // modification de quantité grace à la comparaison d'ID puis chargement de la nouvelle quantité
   inputQuantity.addEventListener("change", () => {
+    // mise à jour quantité
     const id = item.myId;
     const itemId = productInLocalStorage.find((item) => item.myId === id);
     itemId.quantity = inputQuantity.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
-
     const totalQuantity = document.getElementById("totalQuantity");
     totalQuantity.textContent = itemId.quantity;
 
-    location.reload();
+    //mise à jour du prix
+    const priceBasket = document.getElementById("totalPrice");
+    const totPrice = item.quantity * product.price;
+    priceOfBasket.push(totPrice);
+    priceBasket.textContent = totPrice;
   });
 
   return div;

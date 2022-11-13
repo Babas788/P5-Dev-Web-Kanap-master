@@ -76,13 +76,12 @@ function cart(product) {
     let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
 
     if (productInLocalStorage) {
-      const recherche = productInLocalStorage.find(
+      const find = productInLocalStorage.find(
         (element) => element.myId === id && element.colors === colors
       );
-      if (recherche) {
-        let newQuantity =
-          parseInt(basket.quantity) + parseInt(recherche.quantity);
-        recherche.quantity = newQuantity;
+      if (find) {
+        let newQuantity = parseInt(basket.quantity) + parseInt(find.quantity);
+        find.quantity = newQuantity;
         localStorage.setItem(
           "productCart",
           JSON.stringify(productInLocalStorage)
