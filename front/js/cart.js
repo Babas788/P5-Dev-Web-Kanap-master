@@ -191,3 +191,8 @@ function priceBasket(item, product) {
 }
 
 // formulaire de saisie
+form();
+function form() {
+  const prenom = document.getElementsByName("firstName");
+  console.log(prenom);
+}
