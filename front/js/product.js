@@ -86,14 +86,14 @@ function cart(product) {
           "productCart",
           JSON.stringify(productInLocalStorage)
         );
-        window.location.href = `cart.html?id=${id}`;
+        window.location.href = `cart.html`;
       } else {
         productInLocalStorage.push(basket);
         localStorage.setItem(
           "productCart",
           JSON.stringify(productInLocalStorage)
         );
-        window.location.href = `cart.html?id=${id}`;
+        window.location.href = `cart.html`;
       }
     } else {
       productInLocalStorage = [];
@@ -102,7 +102,7 @@ function cart(product) {
         "productCart",
         JSON.stringify(productInLocalStorage)
       );
-      window.location.href = `cart.html?id=${id}`;
+      window.location.href = `cart.html`;
     }
   });
 }
