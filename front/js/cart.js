@@ -132,11 +132,7 @@ function itemSetting(item, product) {
     const totalQuantity = document.getElementById("totalQuantity");
     totalQuantity.textContent = itemId.quantity;
 
-    //mise à jour du prix
-    const priceBasket = document.getElementById("totalPrice");
-    const totPrice = item.quantity * product.price;
-    priceOfBasket.push(totPrice);
-    priceBasket.textContent = totPrice;
+    location.reload();
   });
 
   return div;
@@ -196,7 +192,22 @@ function priceBasket(item, product) {
 
 // formulaire de saisie
 form();
+
 function form() {
-  const prenom = document.getElementsByName("firstName");
-  console.log(prenom);
+  const formulaire = document.querySelector(".cart__order__form");
+  formulaire.email.addEventListener("change", () => {
+    validEmail(this);
+  });
+
+  function validEmail() {
+    //cration regexp email
+    let emailRegExp = new RegExp(
+      "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
+      "g"
+    );
+
+    let testEmail = emailRegExp.test(formulaire.email.value);
+
+    console.log(testEmail);
+  }
 }
