@@ -126,10 +126,11 @@ function itemSetting(item, product) {
   inputQuantity.addEventListener("change", () => {
     // mise à jour quantité
     const id = item.myId;
+    const totalQuantity = document.getElementById("totalQuantity");
     const itemId = productInLocalStorage.find((item) => item.myId === id);
+
     itemId.quantity = inputQuantity.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
-    const totalQuantity = document.getElementById("totalQuantity");
     totalQuantity.textContent = itemId.quantity;
 
     location.reload();
