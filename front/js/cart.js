@@ -100,7 +100,7 @@ function productPrice(product) {
   return prodPrice;
 }
 
-function itemSetting(item, product) {
+function itemSetting(item) {
   const div = document.createElement("div");
   div.classList.add("cart__item__content__settings");
 
