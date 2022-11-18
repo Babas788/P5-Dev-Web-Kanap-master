@@ -1,6 +1,4 @@
-const page = window.location.search;
-const url = new URLSearchParams(page);
-const id = url.get("id");
+const id = new URL(window.location.href).searchParams.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
 
 const numberOfProduct = document.getElementById("quantity");

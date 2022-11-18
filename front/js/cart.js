@@ -116,6 +116,7 @@ function itemSetting(item, product) {
   inputQuantity.classList.add("itemQuantity");
   detailDiv.appendChild(inputQuantity);
 
+  //création du bouton quantité
   inputQuantity.max = "100";
   inputQuantity.min = "1";
   inputQuantity.value = item.quantity;
@@ -192,8 +193,8 @@ function priceBasket(item, product) {
 }
 
 // formulaire de saisie
-form();
 
+form();
 function form() {
   const email = document.getElementById("email");
   const firstName = document.getElementById("firstName");
@@ -201,6 +202,7 @@ function form() {
   const address = document.getElementById("address");
   const city = document.getElementById("city");
 
+  //création d'évènement pour chaque input
   email.addEventListener("change", () => {
     validEmail(this);
   });
@@ -218,14 +220,20 @@ function form() {
   });
 
   function validEmail() {
-    //cration regexp email
+    //cration regexp
     let emailRegExp = new RegExp(
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
       "g"
     );
+
+    //test de la value de l'input selon la regexp
     let testEmail = emailRegExp.test(email.value);
     let emailErrorMsg = document.getElementById("emailErrorMsg");
-    if (testEmail === false) {
+
+    //message d'erreur ou non
+    if (testEmail) {
+      emailErrorMsg.textContent = "";
+    } else {
       emailErrorMsg.textContent = "Veuillez entrer une adresse Email valide";
     }
   }
@@ -233,7 +241,9 @@ function form() {
     const nameRegExp = new RegExp("^[A-Za-z]");
     let testFirstName = nameRegExp.test(firstName.value);
     let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-    if (testFirstName === false) {
+    if (testFirstName) {
+      firstNameErrorMsg.textContent = "";
+    } else {
       firstNameErrorMsg.textContent = "Veuillez entrer un prénom valide";
     }
   }
@@ -241,7 +251,9 @@ function form() {
     const nameRegExp = new RegExp("^[A-Za-z]");
     let testLastName = nameRegExp.test(lastName.value);
     let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-    if (testLastName === false) {
+    if (testLastName) {
+      lastNameErrorMsg.textContent = "";
+    } else {
       lastNameErrorMsg.textContent = "Veuillez entrer un nom valide";
     }
   }
@@ -249,7 +261,9 @@ function form() {
     let addressRegExp = new RegExp("^[0-9a-z]");
     let testAddress = addressRegExp.test(address.value);
     let addressErrorMsg = document.getElementById("addressErrorMsg");
-    if (testAddress === false) {
+    if (testAddress) {
+      addressErrorMsg.textContent = "";
+    } else {
       addressErrorMsg.textContent = "Veuillez entrer une adresse valide";
     }
   }
@@ -257,50 +271,51 @@ function form() {
     let cityRegExp = new RegExp("^[A-Za-z]");
     let testCity = cityRegExp.test(city.value);
     let cityErrorMsg = document.getElementById("cityErrorMsg");
-    if (testCity === false) {
+    if (testCity) {
+      cityErrorMsg.textContent = "";
+    } else {
       cityErrorMsg.textContent = "Veuillez entrer une ville valide";
     }
   }
-  makeJsonData();
-
-  function makeJsonData() {
-    const finalButton = document.getElementById("order");
-    finalButton.addEventListener("click", () => {
-      let id = [];
-      for (let i = 0; i < productInLocalStorage.length; i++) {
-        id.push(productInLocalStorage[i].myId);
-      }
-
-      let contactId = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value,
-        id,
-      };
-
-      const order = {
-        method: "POST",
-        body: JSON.stringify(contactId),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-
-      fetch("http://localhost:3000/api/products/order", order)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          localStorage.clear();
-          localStorage.setItem("orderId", data.orderId);
-
-          document.location.href = "confirmation.html";
-        })
-        .catch((err) => {
-          alert("Problème avec fetch : " + err.message);
-        });
-    });
-  }
 }
+
+function postForm() {
+  const order = document.getElementById("order");
+  order.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    // je récupère les données du formulaire dans un objet
+    const contact = {
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      address: document.getElementById("address").value,
+      city: document.getElementById("city").value,
+      email: document.getElementById("email").value,
+    };
+
+    //récupération de l'iD
+    let products = [];
+    for (let i = 0; i < productInLocalStorage.length; i++) {
+      products.push(productInLocalStorage[i].myId);
+    }
+
+    const finalOrder = {
+      contact,
+      products,
+    };
+
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(finalOrder),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem("orderId", data.orderId);
+        document.location.href = "confirmation.html?id=" + data.orderId;
+      });
+  });
+}
+postForm();
