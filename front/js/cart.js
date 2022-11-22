@@ -94,8 +94,16 @@ function productColor(item) {
   return color;
 }
 
+const createHtml = (textContent = "") => {
+  const createdElement = document.createElement("p");
+  createdElement.textContent = "couleur";
+
+  return createdElement;
+};
+
 function productPrice(product) {
   const prodPrice = document.createElement("p");
+  prodPrice.innerHTML = product.price;
   prodPrice.textContent = product.price;
   return prodPrice;
 }

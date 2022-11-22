@@ -1,43 +1,28 @@
 const id = new URL(window.location.href).searchParams.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
 
-const numberOfProduct = document.getElementById("quantity");
-
 fetch(myUrl)
   .then((response) => response.json())
-  .then((data) => create(data));
+  .then((products) => create(products));
 
-function create(product) {
-  picture(product);
-  title(product);
-  price(product);
-  description(product);
-  myColor(product);
-  cart(product);
+function create(products) {
+  createHtml(products);
+  myColor(products);
+  cart(products);
 }
 
-function picture(product) {
-  const image = document.createElement("img");
-  document.querySelector(".item__img").appendChild(image);
-  image.src = product.imageUrl;
-  image.alt = product.altTxt;
+function createHtml(products) {
+  const image = createElement(
+    "img",
+    products.imageUrl,
+    products.altTxt,
+    ".item__img"
+  );
+  const title = textContent("#title", products.name);
+  const price = textContent("#price", products.price);
+  const description = textContent("#description", products.description);
+  return image + title + price + description;
 }
-
-function title(product) {
-  const title = document.getElementById("title");
-  title.innerHTML = product.name;
-}
-
-function price(product) {
-  const price = document.getElementById("price");
-  price.innerHTML = product.price;
-}
-
-function description(product) {
-  const description = document.getElementById("description");
-  description.innerHTML = product.description;
-}
-
 function myColor(product) {
   const color = product.colors;
   color.forEach((color) => {
@@ -48,11 +33,25 @@ function myColor(product) {
   });
 }
 
+function createElement(balise, src, alt, select) {
+  const created = document.createElement(balise);
+  created.src = src;
+  created.alt = alt;
+  document.querySelector(select).appendChild(created);
+  return created;
+}
+
+function textContent(select, text) {
+  const selection = document.querySelector(select);
+  selection.textContent = text;
+}
+
 function cart(product) {
   const myBasket = document.getElementById("addToCart");
 
   myBasket.addEventListener("click", () => {
-    let quantity = numberOfProduct.value;
+    const quant = document.getElementById("quantity");
+    let quantity = quant.value;
     let colors = document.getElementById("colors").value;
 
     let basket = {
