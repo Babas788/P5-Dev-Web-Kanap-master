@@ -281,9 +281,8 @@ function form() {
 
 function postForm() {
   const order = document.getElementById("order");
-  order.addEventListener("click", (event) => {
-    event.preventDefault();
-
+  order.addEventListener("click", (e) => {
+    e.preventDefault();
     // je récupère les données du formulaire dans un objet
     const contact = {
       firstName: document.getElementById("firstName").value,
