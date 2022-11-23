@@ -118,7 +118,6 @@ function cartItemQuantity(item, article) {
   deleteProducts.addEventListener("click", () => {
     let id = item.myId;
     let color = item.colors;
-
     productInLocalStorage = productInLocalStorage.filter(
       (item) => item.myId !== id || item.colors !== color
     );
@@ -206,7 +205,7 @@ function form() {
   function validAddress() {
     let addressRegExp = new RegExp("^[0-9a-z]");
     let testAddress = regExpTest(addressRegExp, address);
-    const message = errorMessage(testAddress, "#AddressErrorMsg");
+    const message = errorMessage(testAddress, "#addressErrorMsg");
     return message;
   }
   function validCity() {
