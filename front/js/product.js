@@ -8,7 +8,7 @@ fetch(myUrl)
 function create(products) {
   createHtml(products);
   myColor(products);
-  cart(products);
+  cart();
 }
 
 function createHtml(products) {
@@ -46,7 +46,7 @@ function textContent(select, text) {
   selection.textContent = text;
 }
 
-function cart(product) {
+function cart() {
   const myBasket = document.getElementById("addToCart");
 
   myBasket.addEventListener("click", () => {
