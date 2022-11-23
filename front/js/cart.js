@@ -19,7 +19,7 @@ function dataApi(productInLocalStorage) {
   });
 }
 
-// creation de la fonction générale afin de mettre en page et faire passer les arguments
+// creation de la fonction générale
 function create(products, item) {
   const cart = document.getElementById("cart__items");
   const article = createArticle(
@@ -86,9 +86,7 @@ function cartItemQuantity(item, article) {
     "cart__item__content__settings",
     article
   );
-
   const quantity = createTextContent("p", cartItemSettings, "Qte :");
-
   const input = createInput(
     "input",
     cartItemSettings,
@@ -107,7 +105,6 @@ function cartItemQuantity(item, article) {
     totalQuantity.textContent = itemId.quantity;
     location.reload();
   });
-
   const deleteDiv = createDiv(
     "div",
     "cart__item__content__settings__delete",

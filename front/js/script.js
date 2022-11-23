@@ -1,9 +1,10 @@
+// récupération des données de l'api avec méthode fetch
 let url = "http://localhost:3000/api/products";
-
 fetch(url)
   .then((response) => response.json())
   .then((products) => create(products));
 
+// définition d'une fonction réutilisable
 function createdElement(balise, href, src, alt, text) {
   const created = document.createElement(balise);
   created.href = href;
@@ -13,6 +14,7 @@ function createdElement(balise, href, src, alt, text) {
   return created;
 }
 
+// création html pour chaque produit à l'aide d'une boucle
 function create(products) {
   products.forEach((products) => {
     const anchor = createdElement("a", `./product.html?id=${products._id}`);
