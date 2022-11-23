@@ -45,7 +45,7 @@ function image(products, article) {
     products.imageUrl,
     products.altTxt
   );
-  return divImage;
+  return imageProducts;
 }
 
 function divDescription(products, item, article) {
@@ -174,43 +174,34 @@ function form() {
     validCity(this);
   });
 
-  function regExpTest(RegExp, form) {
-    let test = RegExp.test(form.value);
-    return test;
-  }
-
   function validEmail() {
-    //creation regexp
-    let emailRegExp = new RegExp(
-      "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
-      "g"
-    );
     //test de la value de l'input selon la regexp
-    let testEmail = regExpTest(emailRegExp, email);
+    const testEmail = valid(
+      "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
+      "g",
+      email
+    );
     const message = errorMessage(testEmail, "#emailErrorMsg");
     return message;
   }
   function validFirstName() {
-    let nameRegExp = new RegExp("^[A-Za-z]");
-    let testFirstName = regExpTest(nameRegExp, firstName);
+    const testFirstName = valid("^[A-Za-z]", firstName);
     const message = errorMessage(testFirstName, "#firstNameErrorMsg");
     return message;
   }
+
   function validLastName() {
-    const nameRegExp = new RegExp("^[A-Za-z]");
-    let testLastName = regExpTest(nameRegExp, lastName);
+    const testLastName = valid("^[A-Za-z]", lastName);
     const message = errorMessage(testLastName, "#lastNameErrorMsg");
     return message;
   }
   function validAddress() {
-    let addressRegExp = new RegExp("^[0-9a-z]");
-    let testAddress = regExpTest(addressRegExp, address);
+    const testAddress = valid("^[0-9a-z]", address);
     const message = errorMessage(testAddress, "#addressErrorMsg");
     return message;
   }
   function validCity() {
-    let cityRegExp = new RegExp("^[A-Za-z]");
-    let testCity = regExpTest(cityRegExp, city);
+    const testCity = valid("^[A-Za-z]", address);
     const message = errorMessage(testCity, "#cityErrorMsg");
     return message;
   }
@@ -302,4 +293,15 @@ function errorMessage(test, selector) {
     message.textContent = "Veuillez entrer une adresse Email valide";
   }
   return message;
+}
+
+function valid(detailRegExp, detail) {
+  let regExp = new RegExp(detailRegExp);
+  let test = regExpTest(regExp, detail);
+  return test;
+}
+
+function regExpTest(RegExp, form) {
+  let test = RegExp.test(form.value);
+  return test;
 }
