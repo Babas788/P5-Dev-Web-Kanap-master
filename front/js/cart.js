@@ -1,5 +1,4 @@
 // récupération de mon localStorage
-
 let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
 
 //Creation de tableau pour modification depuis notre page panier
@@ -130,43 +129,6 @@ function cartItemQuantity(item, article) {
   return cartItemSettings + quantity;
 }
 
-function createArticle(balise, name, dataSetId, dataSetColor) {
-  const createdElement = document.createElement(balise);
-  createdElement.className = name;
-  createdElement.dataset.id = dataSetId;
-  createdElement.dataset.color = dataSetColor;
-  return createdElement;
-}
-
-function createDiv(balise, name, selector, src, alt) {
-  const created = document.createElement(balise);
-  created.className = name;
-  selector.append(created);
-  created.src = src;
-  created.alt = alt;
-  return created;
-}
-
-function createTextContent(balise, selector, text, name) {
-  const created = document.createElement(balise);
-  selector.append(created);
-  created.textContent = text;
-  created.className = name;
-  return created;
-}
-
-function createInput(balise, selector, type, className, inputName, inputValue) {
-  const input = document.createElement(balise);
-  selector.append(input);
-  input.type = type;
-  input.className = className;
-  input.name = inputName;
-  input.max = "100";
-  input.min = "1";
-  input.value = inputValue;
-  return input;
-}
-
 function totalPrice(products, item) {
   const price = document.getElementById("totalPrice");
   const totPrice = item.quantity * products.price;
@@ -213,63 +175,45 @@ function form() {
     validCity(this);
   });
 
+  function regExpTest(RegExp, form) {
+    let test = RegExp.test(form.value);
+    return test;
+  }
+
   function validEmail() {
-    //cration regexp
+    //creation regexp
     let emailRegExp = new RegExp(
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
       "g"
     );
-
     //test de la value de l'input selon la regexp
-    let testEmail = emailRegExp.test(email.value);
-    let emailErrorMsg = document.getElementById("emailErrorMsg");
-
-    //message d'erreur ou non
-    if (testEmail) {
-      emailErrorMsg.textContent = "";
-    } else {
-      emailErrorMsg.textContent = "Veuillez entrer une adresse Email valide";
-    }
+    let testEmail = regExpTest(emailRegExp, email);
+    const message = errorMessage(testEmail, "#emailErrorMsg");
+    return message;
   }
   function validFirstName() {
-    const nameRegExp = new RegExp("^[A-Za-z]");
-    let testFirstName = nameRegExp.test(firstName.value);
-    let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-    if (testFirstName) {
-      firstNameErrorMsg.textContent = "";
-    } else {
-      firstNameErrorMsg.textContent = "Veuillez entrer un prénom valide";
-    }
+    let nameRegExp = new RegExp("^[A-Za-z]");
+    let testFirstName = regExpTest(nameRegExp, firstName);
+    const message = errorMessage(testFirstName, "#firstNameErrorMsg");
+    return message;
   }
   function validLastName() {
     const nameRegExp = new RegExp("^[A-Za-z]");
-    let testLastName = nameRegExp.test(lastName.value);
-    let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-    if (testLastName) {
-      lastNameErrorMsg.textContent = "";
-    } else {
-      lastNameErrorMsg.textContent = "Veuillez entrer un nom valide";
-    }
+    let testLastName = regExpTest(nameRegExp, lastName);
+    const message = errorMessage(testLastName, "#lastNameErrorMsg");
+    return message;
   }
   function validAddress() {
     let addressRegExp = new RegExp("^[0-9a-z]");
-    let testAddress = addressRegExp.test(address.value);
-    let addressErrorMsg = document.getElementById("addressErrorMsg");
-    if (testAddress) {
-      addressErrorMsg.textContent = "";
-    } else {
-      addressErrorMsg.textContent = "Veuillez entrer une adresse valide";
-    }
+    let testAddress = regExpTest(addressRegExp, address);
+    const message = errorMessage(testAddress, "#AddressErrorMsg");
+    return message;
   }
   function validCity() {
     let cityRegExp = new RegExp("^[A-Za-z]");
-    let testCity = cityRegExp.test(city.value);
-    let cityErrorMsg = document.getElementById("cityErrorMsg");
-    if (testCity) {
-      cityErrorMsg.textContent = "";
-    } else {
-      cityErrorMsg.textContent = "Veuillez entrer une ville valide";
-    }
+    let testCity = regExpTest(cityRegExp, city);
+    const message = errorMessage(testCity, "#cityErrorMsg");
+    return message;
   }
 }
 
@@ -312,3 +256,51 @@ function postForm() {
   });
 }
 postForm();
+
+function createArticle(balise, name, dataSetId, dataSetColor) {
+  const createdElement = document.createElement(balise);
+  createdElement.className = name;
+  createdElement.dataset.id = dataSetId;
+  createdElement.dataset.color = dataSetColor;
+  return createdElement;
+}
+
+function createDiv(balise, name, selector, src, alt) {
+  const created = document.createElement(balise);
+  created.className = name;
+  selector.append(created);
+  created.src = src;
+  created.alt = alt;
+  return created;
+}
+
+function createTextContent(balise, selector, text, name) {
+  const created = document.createElement(balise);
+  selector.append(created);
+  created.textContent = text;
+  created.className = name;
+  return created;
+}
+
+function createInput(balise, selector, type, className, inputName, inputValue) {
+  const input = document.createElement(balise);
+  selector.append(input);
+  input.type = type;
+  input.className = className;
+  input.name = inputName;
+  input.max = "100";
+  input.min = "1";
+  input.value = inputValue;
+  return input;
+}
+
+function errorMessage(test, selector) {
+  const message = document.querySelector(selector);
+  //message d'erreur ou non
+  if (test) {
+    message.textContent = "";
+  } else {
+    message.textContent = "Veuillez entrer une adresse Email valide";
+  }
+  return message;
+}
