@@ -30,8 +30,7 @@ function create(products, item) {
   image(products, article);
   divDescription(products, item, article);
   cartItemQuantity(item, article);
-  totalPrice(products, item);
-  totalQuantity(item);
+  totalProducts(item, products);
   cart.appendChild(article);
   return article;
 }
@@ -94,16 +93,20 @@ function cartItemQuantity(item, article) {
     "itemQuantity",
     item.quantity
   );
+
   input.addEventListener("change", () => {
     // mise à jour quantité
     const id = item.myId;
     const totalQuantity = document.getElementById("totalQuantity");
     const itemId = productInLocalStorage.find((item) => item.myId === id);
+
     itemId.quantity = input.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+
     totalQuantity.textContent = itemId.quantity;
     location.reload();
   });
+
   const deleteDiv = createDiv(
     "div",
     "cart__item__content__settings__delete",
@@ -128,23 +131,19 @@ function cartItemQuantity(item, article) {
   return cartItemSettings + quantity;
 }
 
-function totalPrice(products, item) {
-  const price = document.getElementById("totalPrice");
-  const totPrice = item.quantity * products.price;
-  priceOfBasket.push(totPrice);
-  const reducer = (accumulator, curr) => accumulator + curr;
-  const totalPrice = priceOfBasket.reduce(reducer);
-  price.textContent = totalPrice;
-}
+function totalProducts(item, products) {
+  const totalPrice = total(
+    "totalPrice",
+    item.quantity * products.price,
+    priceOfBasket
+  );
 
-function totalQuantity(item) {
-  const totalQuantity = document.getElementById("totalQuantity");
-  const productQuantity = item.quantity;
-  quantityOfProduct.push(parseInt(productQuantity));
-  const reducer = (accumulator, curr) => accumulator + curr;
-  const totQuantity = quantityOfProduct.reduce(reducer);
-  totalQuantity.textContent = totQuantity;
-  return totQuantity;
+  const totalQuantity = total(
+    "totalQuantity",
+    item.quantity,
+    quantityOfProduct
+  );
+  return totalPrice + totalQuantity;
 }
 
 // FORMULAIRE
@@ -304,4 +303,13 @@ function valid(detailRegExp, detail) {
 function regExpTest(RegExp, form) {
   let test = RegExp.test(form.value);
   return test;
+}
+function total(selector, totalProducts, baskets) {
+  const element = document.getElementById(selector);
+  const productsBakset = totalProducts;
+  baskets.push(parseInt(productsBakset));
+  const reducer = (accumulator, curr) => accumulator + curr;
+  const totQuantity = baskets.reduce(reducer);
+  element.textContent = totQuantity;
+  return totQuantity;
 }
