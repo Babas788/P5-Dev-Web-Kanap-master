@@ -29,7 +29,7 @@ function create(products, item) {
   );
   image(products, article);
   divDescription(products, item, article);
-  cartItemQuantity(item, article);
+  cartItemQuantity(item, article, products);
   totalProducts(item, products);
   cart.appendChild(article);
   return article;
@@ -78,7 +78,7 @@ function divDescription(products, item, article) {
   );
 }
 
-function cartItemQuantity(item, article) {
+function cartItemQuantity(item, article, products) {
   const cartItemSettings = createDiv(
     "div",
     "cart__item__content__settings",
@@ -95,7 +95,6 @@ function cartItemQuantity(item, article) {
   );
 
   input.addEventListener("change", () => {
-    // mise à jour quantité
     const id = item.myId;
     const totalQuantity = document.getElementById("totalQuantity");
     const itemId = productInLocalStorage.find((item) => item.myId === id);
