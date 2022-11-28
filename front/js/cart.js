@@ -27,9 +27,11 @@ function create(products, item) {
     item.myId,
     item.colors
   );
+
+  // fonction décalrée dans create pour les paramètres
   image(products, article);
   divDescription(products, item, article);
-  cartItemQuantity(item, article, products);
+  cartItemQuantity(item, article);
   totalProducts(item, products);
   cart.appendChild(article);
   return article;
@@ -78,7 +80,7 @@ function divDescription(products, item, article) {
   );
 }
 
-function cartItemQuantity(item, article, products) {
+function cartItemQuantity(item, article) {
   const cartItemSettings = createDiv(
     "div",
     "cart__item__content__settings",
@@ -93,10 +95,10 @@ function cartItemQuantity(item, article, products) {
     "itemQuantity",
     item.quantity
   );
-
   input.addEventListener("change", () => {
     const id = item.myId;
     const totalQuantity = document.getElementById("totalQuantity");
+    //comparaison entre l'id du local storage et l'id du bouton
     const itemId = productInLocalStorage.find((item) => item.myId === id);
 
     itemId.quantity = input.value;
