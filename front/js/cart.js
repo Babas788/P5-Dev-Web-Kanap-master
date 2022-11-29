@@ -14,12 +14,12 @@ function dataApi(productInLocalStorage) {
     const myUrl = `http://localhost:3000/api/products/${item.myId}`;
     fetch(myUrl)
       .then((response) => response.json())
-      .then((products) => create(products, item));
+      .then((product) => create(product, item));
   });
 }
 
 // creation de la fonction générale
-function create(products, item) {
+function create(product, item) {
   const cart = document.getElementById("cart__items");
   const article = createArticle(
     "article",
@@ -28,30 +28,30 @@ function create(products, item) {
     item.colors
   );
   // fonction décalrée dans create pour les paramètres
-  image(products, article);
-  divDescription(products, item, article);
-  cartItemQuantity(item, article, products);
-  totalProducts(item, products);
+  image(product, article);
+  divDescription(product, item, article);
+  cartItemQuantity(item, article, product);
+  totalProducts(item, product);
   cart.appendChild(article);
   return article;
 }
 
-function image(products, article) {
+function image(product, article) {
   const divImage = createDiv("div", "cart__item__img", article);
-  createDiv("img", "none", divImage, products.imageUrl, products.altTxt);
+  createDiv("img", "none", divImage, product.imageUrl, product.altTxt);
   return divImage;
 }
 
-function divDescription(products, item, article) {
+function divDescription(product, item, article) {
   const divDescription = createDiv("div", "cart__item__content", article);
   const desciptionProductsDiv = createDiv(
     "div",
     "cart__item__content__description",
     divDescription
   );
-  createTextContent("h2", desciptionProductsDiv, products.name, "none");
+  createTextContent("h2", desciptionProductsDiv, product.name, "none");
   createTextContent("p", desciptionProductsDiv, item.colors, "none");
-  createTextContent("p", desciptionProductsDiv, products.price, "none");
+  createTextContent("p", desciptionProductsDiv, product.price, "none");
   return desciptionProductsDiv;
 }
 
@@ -74,12 +74,10 @@ function cartItemQuantity(item, article) {
     // mise à jour quantité
     const id = item.myId;
     const totalQuantity = document.getElementById("totalQuantity");
-    const itemId = productInLocalStorage.find((item) => item.myId === id);
-
-    itemId.quantity = input.value;
+    const product = productInLocalStorage.find((item) => item.myId === id);
+    product.quantity = input.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
-
-    totalQuantity.textContent = itemId.quantity;
+    totalQuantity.textContent = product.quantity;
     location.reload();
   });
 
@@ -143,7 +141,6 @@ function form() {
     //test de la value de l'input selon la regexp
     const testEmail = valid(
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
-      "g",
       email
     );
     errorMessage(testEmail, "#emailErrorMsg");
@@ -205,8 +202,8 @@ function postForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem("orderId", data.orderId);
-        document.location.href = "confirmation.html?id=" + data.orderId;
+        localStorage.setItem("orderId");
+        document.location.href = "confirmation.html?id=";
       });
   });
 }
@@ -260,9 +257,9 @@ function errorMessage(test, selector) {
   return message;
 }
 
-function valid(detailRegExp, detail) {
+function valid(detailRegExp, value) {
   let regExp = new RegExp(detailRegExp);
-  let test = regExpTest(regExp, detail);
+  let test = regExpTest(regExp, value);
   return test;
 }
 
