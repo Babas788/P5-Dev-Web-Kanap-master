@@ -27,7 +27,6 @@ function create(products, item) {
     item.myId,
     item.colors
   );
-
   // fonction décalrée dans create pour les paramètres
   image(products, article);
   divDescription(products, item, article);
@@ -39,14 +38,8 @@ function create(products, item) {
 
 function image(products, article) {
   const divImage = createDiv("div", "cart__item__img", article);
-  const imageProducts = createDiv(
-    "img",
-    "none",
-    divImage,
-    products.imageUrl,
-    products.altTxt
-  );
-  return imageProducts;
+  createDiv("img", "none", divImage, products.imageUrl, products.altTxt);
+  return divImage;
 }
 
 function divDescription(products, item, article) {
@@ -56,37 +49,19 @@ function divDescription(products, item, article) {
     "cart__item__content__description",
     divDescription
   );
-  const productsDetails = createTextContent(
-    "h2",
-    desciptionProductsDiv,
-    products.name,
-    "none"
-  );
-  const productsColor = createTextContent(
-    "p",
-    desciptionProductsDiv,
-    item.colors,
-    "none"
-  );
-  const productsPrice = createTextContent(
-    "p",
-    desciptionProductsDiv,
-    products.price,
-    "none"
-  );
-
-  return (
-    desciptionProductsDiv + productsPrice + productsColor + productsDetails
-  );
+  createTextContent("h2", desciptionProductsDiv, products.name, "none");
+  createTextContent("p", desciptionProductsDiv, item.colors, "none");
+  createTextContent("p", desciptionProductsDiv, products.price, "none");
+  return desciptionProductsDiv;
 }
 
-function cartItemQuantity(item, article, products) {
+function cartItemQuantity(item, article) {
   const cartItemSettings = createDiv(
     "div",
     "cart__item__content__settings",
     article
   );
-  const quantity = createTextContent("p", cartItemSettings, "Qte :");
+  createTextContent("p", cartItemSettings, "Qte :");
   const input = createInput(
     "input",
     cartItemSettings,
@@ -128,22 +103,12 @@ function cartItemQuantity(item, article, products) {
     alert("Le produit a bien été supprimé de votre panier!");
     location.reload();
   });
-  return cartItemSettings + quantity;
+  return cartItemSettings;
 }
 
 function totalProducts(item, products) {
-  const totalPrice = total(
-    "totalPrice",
-    item.quantity * products.price,
-    priceOfBasket
-  );
-
-  const totalQuantity = total(
-    "totalQuantity",
-    item.quantity,
-    quantityOfProduct
-  );
-  return totalPrice + totalQuantity;
+  total("totalPrice", item.quantity * products.price, priceOfBasket);
+  total("totalQuantity", item.quantity, quantityOfProduct);
 }
 
 // FORMULAIRE
@@ -180,29 +145,29 @@ function form() {
       "g",
       email
     );
-    const message = errorMessage(testEmail, "#emailErrorMsg");
-    return message;
+    errorMessage(testEmail, "#emailErrorMsg");
+    return testEmail;
   }
   function validFirstName() {
     const testFirstName = valid("^[A-Za-z]", firstName);
-    const message = errorMessage(testFirstName, "#firstNameErrorMsg");
-    return message;
+    errorMessage(testFirstName, "#firstNameErrorMsg");
+    return testFirstName;
   }
 
   function validLastName() {
     const testLastName = valid("^[A-Za-z]", lastName);
-    const message = errorMessage(testLastName, "#lastNameErrorMsg");
-    return message;
+    errorMessage(testLastName, "#lastNameErrorMsg");
+    return testLastName;
   }
   function validAddress() {
     const testAddress = valid("^[0-9a-z]", address);
-    const message = errorMessage(testAddress, "#addressErrorMsg");
-    return message;
+    errorMessage(testAddress, "#addressErrorMsg");
+    return testAddress;
   }
   function validCity() {
     const testCity = valid("^[A-Za-z]", address);
-    const message = errorMessage(testCity, "#cityErrorMsg");
-    return message;
+    errorMessage(testCity, "#cityErrorMsg");
+    return testCity;
   }
 }
 

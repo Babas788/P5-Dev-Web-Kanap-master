@@ -22,10 +22,10 @@ function createHtml(products) {
     products.altTxt,
     ".item__img"
   );
-  const title = textContent("#title", products.name);
-  const price = textContent("#price", products.price);
-  const description = textContent("#description", products.description);
-  return image + title + price + description;
+  textContent("#title", products.name);
+  textContent("#price", products.price);
+  textContent("#description", products.description);
+  return image;
 }
 
 function myColor(product) {

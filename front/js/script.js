@@ -33,7 +33,7 @@ function create(products) {
 }
 
 // définition d'une fonction réutilisable
-function createdElement(balise, href, src, alt, text, child) {
+function createdElement(balise, href, src, alt, text) {
   const created = document.createElement(balise);
   created.href = href;
   created.src = src;
