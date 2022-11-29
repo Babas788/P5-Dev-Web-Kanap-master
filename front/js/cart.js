@@ -31,7 +31,7 @@ function create(products, item) {
   // fonction décalrée dans create pour les paramètres
   image(products, article);
   divDescription(products, item, article);
-  cartItemQuantity(item, article);
+  cartItemQuantity(item, article, products);
   totalProducts(item, products);
   cart.appendChild(article);
   return article;
@@ -80,7 +80,7 @@ function divDescription(products, item, article) {
   );
 }
 
-function cartItemQuantity(item, article) {
+function cartItemQuantity(item, article, products) {
   const cartItemSettings = createDiv(
     "div",
     "cart__item__content__settings",
@@ -100,10 +100,9 @@ function cartItemQuantity(item, article) {
     const totalQuantity = document.getElementById("totalQuantity");
     //comparaison entre l'id du local storage et l'id du bouton
     const itemId = productInLocalStorage.find((item) => item.myId === id);
-
     itemId.quantity = input.value;
+    //Nouvelle quantité envoyée dans le localStorage
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
-
     totalQuantity.textContent = itemId.quantity;
     location.reload();
   });

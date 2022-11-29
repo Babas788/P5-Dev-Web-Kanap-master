@@ -4,16 +4,6 @@ fetch(url)
   .then((response) => response.json())
   .then((products) => create(products));
 
-// définition d'une fonction réutilisable
-function createdElement(balise, href, src, alt, text) {
-  const created = document.createElement(balise);
-  created.href = href;
-  created.src = src;
-  created.alt = alt;
-  created.textContent = text;
-  return created;
-}
-
 // création html pour chaque produit à l'aide d'une boucle
 function create(products) {
   products.forEach((products) => {
@@ -35,9 +25,19 @@ function create(products) {
     );
     document.getElementById("items").appendChild(anchor);
     anchor.appendChild(article);
-    article.appendChild(image);
     article.appendChild(title);
+    article.appendChild(image);
     article.appendChild(description);
     return anchor;
   });
+}
+
+// définition d'une fonction réutilisable
+function createdElement(balise, href, src, alt, text, child) {
+  const created = document.createElement(balise);
+  created.href = href;
+  created.src = src;
+  created.alt = alt;
+  created.textContent = text;
+  return created;
 }
