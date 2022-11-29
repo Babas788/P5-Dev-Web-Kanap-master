@@ -71,13 +71,14 @@ function cartItemQuantity(item, article) {
     item.quantity
   );
   input.addEventListener("change", () => {
+    // mise à jour quantité
     const id = item.myId;
     const totalQuantity = document.getElementById("totalQuantity");
-    //comparaison entre l'id du local storage et l'id du bouton
     const itemId = productInLocalStorage.find((item) => item.myId === id);
+
     itemId.quantity = input.value;
-    //Nouvelle quantité envoyée dans le localStorage
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+
     totalQuantity.textContent = itemId.quantity;
     location.reload();
   });
