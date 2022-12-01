@@ -57,8 +57,7 @@ function textContent(select, text) {
 function cart() {
   const myBasket = document.getElementById("addToCart");
   myBasket.addEventListener("click", () => {
-    const quant = document.getElementById("quantity");
-    let quantity = quant.value;
+    let quantity = document.getElementById("quantity").value;
     let colors = document.getElementById("colors").value;
 
     let basket = {
