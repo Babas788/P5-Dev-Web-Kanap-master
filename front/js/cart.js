@@ -21,7 +21,7 @@ function dataApi(productInLocalStorage) {
 // creation de la fonction générale
 function create(product, item) {
   const cart = document.getElementById("cart__items");
-  const article = createArticle(
+  const article = createArticleProduct(
     "article",
     "cart__item",
     item.myId,
@@ -37,32 +37,67 @@ function create(product, item) {
 }
 
 function image(product, article) {
-  const divImage = createDiv("div", "cart__item__img", article);
-  createDiv("img", "none", divImage, product.imageUrl, product.altTxt);
+  const divImage = createElement("div", "cart__item__img", article); //Utilisation de fonction réutilisable
+  createElement(
+    "img",
+    (className = null),
+    divImage,
+    product.imageUrl,
+    product.altTxt
+  );
   return divImage;
 }
 
 function divDescription(product, item, article) {
-  const divDescription = createDiv("div", "cart__item__content", article);
-  const desciptionProductsDiv = createDiv(
+  const divDescription = createElement("div", "cart__item__content", article);
+  const desciptionProductsDiv = createElement(
     "div",
     "cart__item__content__description",
     divDescription
   );
-  createTextContent("h2", desciptionProductsDiv, product.name, "none");
-  createTextContent("p", desciptionProductsDiv, item.colors, "none");
-  createTextContent("p", desciptionProductsDiv, product.price, "none");
+  createElement(
+    "h2",
+    (className = null),
+    desciptionProductsDiv,
+    (src = null),
+    (alt = null),
+    product.name
+  );
+  createElement(
+    "p",
+    (className = null),
+    desciptionProductsDiv,
+    (src = null),
+    (alt = null),
+    item.color
+  );
+  createElement(
+    "p",
+    (className = null),
+    desciptionProductsDiv,
+    (src = null),
+    (alt = null),
+    product.price
+  );
   return desciptionProductsDiv;
 }
 
 function cartItemQuantity(item, article) {
-  const cartItemSettings = createDiv(
+  const cartItemSettings = createElement(
     "div",
     "cart__item__content__settings",
     article
   );
-  createTextContent("p", cartItemSettings, "Qte :");
+  createElement(
+    "p",
+    (className = null),
+    cartItemSettings,
+    (src = null),
+    (atl = null),
+    "Qte :"
+  );
   const input = createInput(
+    // fonction création input
     "input",
     cartItemSettings,
     "Number",
@@ -72,25 +107,25 @@ function cartItemQuantity(item, article) {
   );
   input.addEventListener("change", () => {
     // mise à jour quantité
-    const id = item.myId;
-    const totalQuantity = document.getElementById("totalQuantity");
-    const product = productInLocalStorage.find((item) => item.myId === id);
+    const id = item.myId; //selection de l'id
+    const product = productInLocalStorage.find((item) => item.myId === id); // recherche du produit avec l'id
     product.quantity = input.value;
-    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
-    totalQuantity.textContent = product.quantity;
+    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage)); //mise en place
     location.reload();
   });
 
-  const deleteDiv = createDiv(
+  const deleteDiv = createElement(
     "div",
     "cart__item__content__settings__delete",
     cartItemSettings
   );
-  const deleteProducts = createTextContent(
+  const deleteProducts = createElement(
     "p",
+    "deleteItem",
     deleteDiv,
-    "Supprimer",
-    "deleteItem"
+    (src = null),
+    (alt = null),
+    "Supprimer"
   );
   deleteProducts.addEventListener("click", () => {
     let id = item.myId;
@@ -122,48 +157,48 @@ function form() {
 
   //création d'évènement pour chaque input
   email.addEventListener("change", () => {
-    validEmail(this);
+    validEmail();
   });
   firstName.addEventListener("change", () => {
-    validFirstName(this);
+    validFirstName();
   });
   lastName.addEventListener("change", () => {
-    validLastName(this);
+    validLastName();
   });
   address.addEventListener("change", () => {
-    validAddress(this);
+    validAddress();
   });
   city.addEventListener("change", () => {
-    validCity(this);
+    validCity();
   });
 
   function validEmail() {
     //test de la value de l'input selon la regexp
     const testEmail = valid(
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
-      email
+      email.value
     );
     errorMessage(testEmail, "#emailErrorMsg");
     return testEmail;
   }
   function validFirstName() {
-    const testFirstName = valid("^[A-Za-z]", firstName);
+    const testFirstName = valid("^[A-Za-z]", firstName.value);
     errorMessage(testFirstName, "#firstNameErrorMsg");
     return testFirstName;
   }
 
   function validLastName() {
-    const testLastName = valid("^[A-Za-z]", lastName);
+    const testLastName = valid("^[A-Za-z]", lastName.value);
     errorMessage(testLastName, "#lastNameErrorMsg");
     return testLastName;
   }
   function validAddress() {
-    const testAddress = valid("^[0-9a-z]", address);
+    const testAddress = valid("^[0-9a-z]", address.value);
     errorMessage(testAddress, "#addressErrorMsg");
     return testAddress;
   }
   function validCity() {
-    const testCity = valid("^[A-Za-z]", address);
+    const testCity = valid("^[A-Za-z]", city.value);
     errorMessage(testCity, "#cityErrorMsg");
     return testCity;
   }
@@ -202,14 +237,14 @@ function postForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem("orderId");
-        document.location.href = "confirmation.html?id=";
+        localStorage.setItem("orderId", data.orderId);
+        document.location.href = "confirmation.html?id=" + data.orderId;
       });
   });
 }
 postForm();
 
-function createArticle(balise, name, dataSetId, dataSetColor) {
+function createArticleProduct(balise, name, dataSetId, dataSetColor) {
   const createdElement = document.createElement(balise);
   createdElement.className = name;
   createdElement.dataset.id = dataSetId;
@@ -217,23 +252,15 @@ function createArticle(balise, name, dataSetId, dataSetColor) {
   return createdElement;
 }
 
-function createDiv(balise, name, selector, src, alt) {
+function createElement(balise, name, selector, src, alt, text) {
   const created = document.createElement(balise);
   created.className = name;
   selector.append(created);
   created.src = src;
   created.alt = alt;
-  return created;
-}
-
-function createTextContent(balise, selector, text, name) {
-  const created = document.createElement(balise);
-  selector.append(created);
   created.textContent = text;
-  created.className = name;
   return created;
 }
-
 function createInput(balise, selector, type, className, inputName, inputValue) {
   const input = document.createElement(balise);
   selector.append(input);
@@ -245,26 +272,19 @@ function createInput(balise, selector, type, className, inputName, inputValue) {
   input.value = inputValue;
   return input;
 }
-
 function errorMessage(test, selector) {
   const message = document.querySelector(selector);
   //message d'erreur ou non
   if (test) {
     message.textContent = "";
   } else {
-    message.textContent = "Veuillez entrer une adresse Email valide";
+    message.textContent = "Veuillez entrer une information valide";
   }
   return message;
 }
-
 function valid(detailRegExp, value) {
-  let regExp = new RegExp(detailRegExp);
-  let test = regExpTest(regExp, value);
-  return test;
-}
-
-function regExpTest(RegExp, form) {
-  let test = RegExp.test(form.value);
+  let testRegExp = new RegExp(detailRegExp);
+  let test = testRegExp.test(value);
   return test;
 }
 function total(selector, totalProducts, baskets) {
