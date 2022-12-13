@@ -111,7 +111,6 @@ function cartItemQuantity(item, article) {
     const product = productInLocalStorage.find((item) => item.myId === id); // recherche du produit avec l'id
     product.quantity = input.value;
     localStorage.setItem("productCart", JSON.stringify(productInLocalStorage)); //mise en place
-    location.reload();
   });
 
   const deleteDiv = createElement(
@@ -159,16 +158,16 @@ function form() {
   email.addEventListener("change", () => {
     validEmail();
   });
-  firstName.addEventListener("change", () => {
+  firstName.addEventListener("keydown", () => {
     validFirstName();
   });
-  lastName.addEventListener("change", () => {
+  lastName.addEventListener("keydown", () => {
     validLastName();
   });
-  address.addEventListener("change", () => {
+  address.addEventListener("keydown", () => {
     validAddress();
   });
-  city.addEventListener("change", () => {
+  city.addEventListener("keydown", () => {
     validCity();
   });
 
@@ -182,13 +181,13 @@ function form() {
     return testEmail;
   }
   function validFirstName() {
-    const testFirstName = valid("^[A-Za-z]", firstName.value);
+    const testFirstName = valid("^[a-zA-Z]+$", firstName.value);
     errorMessage(testFirstName, "#firstNameErrorMsg");
     return testFirstName;
   }
 
   function validLastName() {
-    const testLastName = valid("^[A-Za-z]", lastName.value);
+    const testLastName = valid("^[a-zA-Z]+$", lastName.value);
     errorMessage(testLastName, "#lastNameErrorMsg");
     return testLastName;
   }
@@ -237,8 +236,9 @@ function postForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem("orderId", data.orderId);
-        document.location.href = "confirmation.html?id=" + data.orderId;
+        if (productInLocalStorage) {
+          document.location.href = "confirmation.html?id=" + data.orderId;
+        }
       });
   });
 }

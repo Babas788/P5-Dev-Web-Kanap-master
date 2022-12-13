@@ -10,8 +10,8 @@ fetch(myUrl)
 // fonction générale de création
 function create(products) {
   createHtml(products);
-  myColor(products);
-  cart();
+  ColorChoice(products);
+  Createcart();
 }
 
 function createHtml(products) {
@@ -28,7 +28,7 @@ function createHtml(products) {
   return image;
 }
 
-function myColor(product) {
+function ColorChoice(product) {
   //création du choix des couleurs
   const color = product.colors;
   color.forEach((color) => {
@@ -54,7 +54,7 @@ function textContent(select, text) {
 }
 
 // gesttion du panier avec envoi d'éléments dans le localstorage
-function cart() {
+function Createcart() {
   const myBasket = document.getElementById("addToCart");
   myBasket.addEventListener("click", () => {
     let quantity = document.getElementById("quantity").value;

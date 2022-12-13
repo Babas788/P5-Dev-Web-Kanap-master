@@ -7,16 +7,16 @@ fetch(url)
 // création html pour chaque produit à l'aide d'une boucle
 function create(products) {
   products.forEach((products) => {
-    const anchor = createdElement("a", `./product.html?id=${products._id}`);
-    const article = createdElement("article");
-    const title = createdElement("h3", "none", "none", "none", products.name);
-    const image = createdElement(
+    const anchor = createElement("a", `./product.html?id=${products._id}`);
+    const article = createElement("article");
+    const title = createElement("h3", "none", "none", "none", products.name);
+    const image = createElement(
       "img",
       "none",
       products.imageUrl,
       products.altTxt
     );
-    const description = createdElement(
+    const description = createElement(
       "p",
       "none",
       "none",
@@ -33,7 +33,7 @@ function create(products) {
 }
 
 // définition d'une fonction réutilisable
-function createdElement(balise, href, src, alt, text) {
+function createElement(balise, href, src, alt, text) {
   const created = document.createElement(balise);
   created.href = href;
   created.src = src;
