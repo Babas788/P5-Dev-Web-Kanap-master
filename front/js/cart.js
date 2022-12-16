@@ -243,7 +243,9 @@ function postForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (productInLocalStorage) {
+        if (productInLocalStorage <= "0") {
+          return;
+        } else {
           document.location.href = "confirmation.html?id=" + data.orderId;
         }
       });
