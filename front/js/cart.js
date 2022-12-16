@@ -69,7 +69,7 @@ function divDescription(product, item, article) {
     desciptionProductsDiv,
     (src = null),
     (alt = null),
-    item.color
+    item.colors
   );
   createElement(
     "p",
@@ -110,7 +110,12 @@ function cartItemQuantity(item, article) {
     const id = item.myId; //selection de l'id
     const product = productInLocalStorage.find((item) => item.myId === id); // recherche du produit avec l'id
     product.quantity = input.value;
-    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage)); //mise en place
+    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+    if (product.quantity < "0") {
+      alert("Veuillez selectionner une quantité valide");
+      return;
+    }
+    location.reload(); //mise en place
   });
 
   const deleteDiv = createElement(
