@@ -1,4 +1,3 @@
-// récupération de mon localStorage
 let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
 
 //Creation de tableau pour modification depuis notre page panier
@@ -108,14 +107,17 @@ function cartItemQuantity(item, article) {
   input.addEventListener("change", () => {
     // mise à jour quantité
     const id = item.myId; //selection de l'id
-    const product = productInLocalStorage.find((item) => item.myId === id); // recherche du produit avec l'id
+    const color = item.colors;
+    const product = productInLocalStorage.find(
+      (item) => item.myId === id && item.colors === color
+    ); // recherche du produit avec l'id
     product.quantity = input.value;
-    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage));
+    localStorage.setItem("productCart", JSON.stringify(productInLocalStorage)); //mise en place
     if (product.quantity < "0") {
-      alert("Veuillez selectionner une quantité valide");
+      alert("veuillez selectionner une quantité valide");
       return;
     }
-    location.reload(); //mise en place
+    location.reload();
   });
 
   const deleteDiv = createElement(
