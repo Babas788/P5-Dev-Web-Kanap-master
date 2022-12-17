@@ -128,7 +128,7 @@ function cartSettings(productQuantity) {
 function deletProduct(productId, productColor) {
   let deletProduct = document.querySelectorAll(".deleteItem");
   deletProduct.forEach((item) => {
-    deletProduct.addEventListener("click", (event) => {
+    item.addEventListener("click", (event) => {
       event.preventDefault();
       let myArticle = item.closest("article");
       const id = productId;
