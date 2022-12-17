@@ -69,7 +69,8 @@ function Createcart() {
       colors === null ||
       colors === "" ||
       quantity === null ||
-      quantity <= "0"
+      quantity <= "0" ||
+      quantity > "100"
     ) {
       alert("Veuillez selectionner une couleur et/ou une quantité valide!");
       return;
