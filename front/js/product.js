@@ -65,13 +65,7 @@ function Createcart() {
       quantity,
       colors,
     };
-    if (
-      colors === null ||
-      colors === "" ||
-      quantity === null ||
-      quantity <= "0" ||
-      quantity > "100"
-    ) {
+    if (colors === null || colors === "" || quantity <= 0 || quantity > 100) {
       alert("Veuillez selectionner une couleur et/ou une quantité valide!");
       return;
     }
