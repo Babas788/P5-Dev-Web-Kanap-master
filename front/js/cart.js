@@ -125,6 +125,31 @@ function cartSettings(productQuantity) {
   return divSettings;
 }
 
+function deletProduct(productId, productColor) {
+  let deletProduct = document.querySelectorAll(".deleteItem");
+  deletProduct.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      let myArticle = item.closest("article");
+      const id = productId;
+      const color = productColor;
+      productInLocalStorage = productInLocalStorage.filter(
+        (item) => item.myId !== id || item.colors !== color
+      );
+      localStorage.setItem(
+        "productCart",
+        JSON.stringify(productInLocalStorage)
+      );
+      recalculQuantity();
+      recalculPrice();
+      alert("Votre produit a bien été supprimé");
+      if (myArticle.parentNode) {
+        myArticle.parentNode.removeChild(myArticle);
+      }
+    });
+  });
+}
+
 // FORMULAIRE
 
 form();
@@ -310,31 +335,6 @@ function changeQuantity(productId, productColor) {
       }
       if (messageErrorQuantity) {
         alert("Veuillez selectionner une quantité comprise entre 1 et 100");
-      }
-    });
-  });
-}
-
-function deletProduct(productId, productColor) {
-  let deletProduct = document.querySelectorAll(".deleteItem");
-  deletProduct.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      event.preventDefault();
-      let myArticle = item.closest("article");
-      const id = productId;
-      const color = productColor;
-      productInLocalStorage = productInLocalStorage.filter(
-        (item) => item.myId !== id || item.colors !== color
-      );
-      localStorage.setItem(
-        "productCart",
-        JSON.stringify(productInLocalStorage)
-      );
-      recalculQuantity();
-      recalculPrice();
-      alert("Votre produit a bien été supprimé");
-      if (myArticle.parentNode) {
-        myArticle.parentNode.removeChild(myArticle);
       }
     });
   });
