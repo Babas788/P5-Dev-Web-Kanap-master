@@ -146,10 +146,6 @@ function deletProduct(productId, productColor) {
       if (myArticle.parentNode) {
         myArticle.parentNode.removeChild(myArticle);
       }
-      if ((productInLocalStorage = "0")) {
-        alert("Votre panier est vide");
-        window.location.href = `index.html`;
-      }
     });
   });
 }
