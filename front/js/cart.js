@@ -7,30 +7,32 @@ let totalPriceProduct = 0;
 let totalQuantity = 0;
 let messageErrorQuantity = false;
 
-// déclaration de variables pour le formulaire de saisie de contact
+// déclaration de variables pour le formulaire de saisie de contact - definition de variables général car utilité dans deux fonctions
 let email = document.getElementById("email");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
 let city = document.getElementById("city");
 
-//si le panier est vide retour à la page d'acceuil
+//si le panier est vide retour à la page d'acceuil avec une alerte
 if (productInLocalStorage === "0" || productInLocalStorage === null) {
-  alert("votre panier est vide, redirection vers la page d'accueil");
+  alert(
+    "votre panier est vide, vous allez être redirigé vers la page d'accueil"
+  );
   window.location.href = `index.html`;
 } else {
-  //sinon on fetch l'api
+  //sinon on fetch l'api afin de récupérer les informations nécessaires
   fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
     .then((product) => {
-      data = product; //push des datas dans le tableau
+      data = product; //récupération des données dans un tableau
       for (let i = 0; i < productInLocalStorage.length; i++) {
         // boucle sur les produits présents dans le local storage avec récupération de l'id, coleur et quantité
         let productId = productInLocalStorage[i].myId;
         let productColor = productInLocalStorage[i].colors;
         let productQuantity = productInLocalStorage[i].quantity;
 
-        const dataApi = data.find((element) => element._id === productId); // comparaison entre id local et id api
+        const dataApi = data.find((element) => element._id === productId); // comparaison entre id localstorage et id api
         create(productId, productColor, productQuantity, dataApi); // déclation de fonctions
         totalProductsPrice(productQuantity, dataApi);
         totalProductsQuantity(productQuantity);
@@ -98,7 +100,6 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
       (alt = null),
       dataApi.price + "€"
     );
-
     divCartItem.appendChild(divCartItemDescription);
     divCartItem.appendChild(cartSettings(productQuantity));
     divCartItemDescription.appendChild(title);
@@ -152,7 +153,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
 
 form();
 function form() {
-  //création d'évènement pour chaque input
+  //création d'évènement pour chaque input de contact
   email.addEventListener("change", () => {
     validEmail();
   });
@@ -175,7 +176,7 @@ function form() {
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
       email.value
     );
-    errorMessage(testEmail, "#emailErrorMsg");
+    errorMessage(testEmail, "#emailErrorMsg"); //message suite au test de la regex
     return testEmail;
   }
   function validFirstName() {
@@ -205,7 +206,7 @@ function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
     if (
-      //si il n'y pas de value au formulaire
+      //si il n'y pas de value au formulaire alert sinon post du produit ainsi des données contact
       !firstName.value ||
       !lastName.value ||
       !address.value ||
@@ -332,6 +333,7 @@ function changeQuantity(productId, productColor) {
         (element) => element.myId === id && element.colors === color
       );
       if (
+        //quantité comprise entre 1 et 100
         newQuantity > 0 &&
         newQuantity <= 100 &&
         Number.isInteger(newQuantity)
