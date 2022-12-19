@@ -32,9 +32,7 @@ function create(productId, productColor, productQuantity, dataApi) {
   );
   cart.appendChild(article);
   article.appendChild(image(dataApi));
-  article.appendChild(
-    cartItem(productId, productColor, productQuantity, dataApi)
-  );
+  article.appendChild(cartItem(productColor, productQuantity, dataApi));
   changeQuantity(productId, productColor);
   deletProduct(productId, productColor);
 }
@@ -43,7 +41,7 @@ function image(dataApi) {
   const divImage = createElement("div", "cart__item__img"); //Utilisation de fonction réutilisable
   const image = createElement(
     "img",
-    (className = null),
+    (elementClass = null),
     dataApi.imageUrl,
     dataApi.altTxt
   );
@@ -51,7 +49,7 @@ function image(dataApi) {
   return divImage;
 }
 
-function cartItem(productId, productColor, productQuantity, dataApi) {
+function cartItem(productColor, productQuantity, dataApi) {
   const divCartItem = createElement("div", "cart__item__content");
   const divCartItemDescription = createElement(
     "div",
@@ -59,25 +57,26 @@ function cartItem(productId, productColor, productQuantity, dataApi) {
   );
   const title = createElement(
     "h2",
-    (className = null),
+    (elementClass = null),
     (src = null),
     (alt = null),
     dataApi.name
   );
   const color = createElement(
     "p",
-    (className = null),
+    (elementClass = null),
     (src = null),
     (alt = null),
     productColor
   );
   const price = createElement(
     "p",
-    (className = null),
+    (elementClass = null),
     (src = null),
     (alt = null),
     dataApi.price + "€"
   );
+
   divCartItem.appendChild(divCartItemDescription);
   divCartItem.appendChild(cartSettings(productQuantity));
   divCartItemDescription.appendChild(title);
@@ -94,7 +93,7 @@ function cartSettings(productQuantity) {
   );
   const qte = createElement(
     "p",
-    (className = null),
+    (elementClass = null),
     (src = null),
     (alt = null),
     "Qte:"
@@ -125,31 +124,6 @@ function cartSettings(productQuantity) {
   return divSettings;
 }
 
-function deletProduct(productId, productColor) {
-  let deletProduct = document.querySelectorAll(".deleteItem");
-  deletProduct.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      event.preventDefault();
-      let myArticle = item.closest("article");
-      const id = productId;
-      const color = productColor;
-      productInLocalStorage = productInLocalStorage.filter(
-        (item) => item.myId !== id || item.colors !== color
-      );
-      localStorage.setItem(
-        "productCart",
-        JSON.stringify(productInLocalStorage)
-      );
-      recalculQuantity();
-      recalculPrice();
-      alert("Votre produit a bien été supprimé");
-      if (myArticle.parentNode) {
-        myArticle.parentNode.removeChild(myArticle);
-      }
-    });
-  });
-}
-
 // FORMULAIRE
 
 form();
@@ -159,7 +133,6 @@ function form() {
   const lastName = document.getElementById("lastName");
   const address = document.getElementById("address");
   const city = document.getElementById("city");
-
   //création d'évènement pour chaque input
   email.addEventListener("change", () => {
     validEmail();
@@ -209,11 +182,12 @@ function form() {
   }
 }
 
+// On vérifie que les champs sont correctement remplis suivant les regex mises en place
+
 function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
     e.preventDefault();
-    // je récupère les données du formulaire dans un objet
     const contact = {
       firstName: document.getElementById("firstName").value,
       lastName: document.getElementById("lastName").value,
@@ -221,6 +195,8 @@ function postForm() {
       city: document.getElementById("city").value,
       email: document.getElementById("email").value,
     };
+
+    // je récupère les données du formulaire dans un objet
 
     //récupération de l'iD
     let products = [];
@@ -250,17 +226,17 @@ function postForm() {
 }
 postForm();
 
-function createArticleProduct(balise, name, dataSetId, dataSetColor) {
+function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
   const createdElement = document.createElement(balise);
-  createdElement.className = name;
+  createdElement.className = elementClass;
   createdElement.dataset.id = dataSetId;
   createdElement.dataset.color = dataSetColor;
   return createdElement;
 }
 
-function createElement(balise, name, src, alt, text) {
+function createElement(balise, elementClass, src, alt, text) {
   const created = document.createElement(balise);
-  created.className = name;
+  created.className = elementClass;
   created.src = src;
   created.alt = alt;
   created.textContent = text;
@@ -364,4 +340,38 @@ function recalculQuantity() {
     newQuantity += parseInt(item.quantity);
   }
   document.getElementById("totalQuantity").textContent = newQuantity;
+  return newQuantity;
+}
+
+function deletProduct(productId, productColor) {
+  let deletProduct = document.querySelectorAll(".deleteItem");
+  deletProduct.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      let myArticle = item.closest("article");
+      const id = productId;
+      const color = productColor;
+      productInLocalStorage = productInLocalStorage.filter(
+        (item) => item.myId !== id || item.colors !== color
+      );
+      localStorage.setItem(
+        "productCart",
+        JSON.stringify(productInLocalStorage)
+      );
+
+      alert("Votre produit a bien été supprimé");
+      if (myArticle.parentNode) {
+        myArticle.parentNode.removeChild(myArticle);
+      }
+      if (
+        productInLocalStorage === null ||
+        productInLocalStorage.length === 0
+      ) {
+        alert("votre panier est vide");
+      } else {
+        recalculQuantity();
+        recalculPrice();
+      }
+    });
+  });
 }
