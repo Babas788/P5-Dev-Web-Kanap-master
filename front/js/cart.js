@@ -1,32 +1,37 @@
-let productInLocalStorage = JSON.parse(localStorage.getItem("productCart"));
+let productInLocalStorage = JSON.parse(localStorage.getItem("productCart")); // récupération du localStorage
 
+// définition de viriables afin de pusher les data + calcul des prix et message d'erreur
 let data = [];
 let totalPrice = 0;
 let totalPriceProduct = 0;
 let totalQuantity = 0;
 let messageErrorQuantity = false;
 
+// déclaration de variables pour le formulaire de saisie de contact
 let email = document.getElementById("email");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
 let city = document.getElementById("city");
 
+//si le panier est vide retour à la page d'acceuil
 if (productInLocalStorage === "0" || productInLocalStorage === null) {
   alert("votre panier est vide, redirection vers la page d'accueil");
   window.location.href = `index.html`;
 } else {
+  //sinon on fetch l'api
   fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
     .then((product) => {
-      data = product;
+      data = product; //push des datas dans le tableau
       for (let i = 0; i < productInLocalStorage.length; i++) {
+        // boucle sur les produits présents dans le local storage avec récupération de l'id, coleur et quantité
         let productId = productInLocalStorage[i].myId;
         let productColor = productInLocalStorage[i].colors;
         let productQuantity = productInLocalStorage[i].quantity;
 
-        const dataApi = data.find((element) => element._id === productId);
-        create(productId, productColor, productQuantity, dataApi);
+        const dataApi = data.find((element) => element._id === productId); // comparaison entre id local et id api
+        create(productId, productColor, productQuantity, dataApi); // déclation de fonctions
         totalProductsPrice(productQuantity, dataApi);
         totalProductsQuantity(productQuantity);
       }
@@ -36,8 +41,10 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
     });
 
   function create(productId, productColor, productQuantity, dataApi) {
+    // fonction mère
     const cart = document.getElementById("cart__items");
     const article = createArticleProduct(
+      // fonction réutilisable
       "article",
       "cart__item",
       productId,
@@ -51,6 +58,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
   }
 
   function image(dataApi) {
+    // fonction image
     const divImage = createElement("div", "cart__item__img"); //Utilisation de fonction réutilisable
     const image = createElement(
       "img",
@@ -63,6 +71,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
   }
 
   function cartItem(productColor, productQuantity, dataApi) {
+    // fonction description avec toujours le principe de fonction réutilisable
     const divCartItem = createElement("div", "cart__item__content");
     const divCartItemDescription = createElement(
       "div",
@@ -99,6 +108,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
   }
 
   function cartSettings(productQuantity) {
+    // fonction setting produit avec input et delete
     const divSettings = createElement("div", "cart__item__content__settings");
     const settingsQuantity = createElement(
       "div",
@@ -191,12 +201,11 @@ function form() {
   }
 }
 
-// On vérifie que les champs sont correctement remplis suivant les regex mises en place
-
 function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
     if (
+      //si il n'y pas de value au formulaire
       !firstName.value ||
       !lastName.value ||
       !address.value ||
@@ -208,6 +217,7 @@ function postForm() {
       );
     } else {
       const contact = {
+        //création d'objet afin de pouvoir sérialiser
         firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
         address: document.getElementById("address").value,
@@ -220,6 +230,7 @@ function postForm() {
       //récupération de l'iD
       let products = [];
       for (let i = 0; i < productInLocalStorage.length; i++) {
+        //boucle sur les produits dans le panier et push pour récupération
         products.push(productInLocalStorage[i].myId);
       }
 
@@ -229,6 +240,7 @@ function postForm() {
       };
 
       fetch("http://localhost:3000/api/products/order", {
+        //fetch avec la méthode post pour le contact ainsi que le ou les produits désirés
         method: "POST",
         body: JSON.stringify(finalOrder),
         headers: {
@@ -250,7 +262,9 @@ function postForm() {
 
 postForm();
 
+//fonctions réutilisables
 function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
+  // fonction article création
   const createdElement = document.createElement(balise);
   createdElement.className = elementClass;
   createdElement.dataset.id = dataSetId;
@@ -259,6 +273,7 @@ function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
 }
 
 function createElement(balise, elementClass, src, alt, text) {
+  // fonction pour créer un élément
   const created = document.createElement(balise);
   created.className = elementClass;
   created.src = src;
@@ -267,6 +282,7 @@ function createElement(balise, elementClass, src, alt, text) {
   return created;
 }
 function createInput(balise, type, className, inputName, inputValue) {
+  // fonction de création d'input
   const input = document.createElement(balise);
   input.type = type;
   input.className = className;
@@ -277,6 +293,7 @@ function createInput(balise, type, className, inputName, inputValue) {
   return input;
 }
 function errorMessage(test, selector) {
+  // fonction pour le message d'erreur regex
   const message = document.querySelector(selector);
   //message d'erreur ou non
   if (test) {
@@ -287,17 +304,17 @@ function errorMessage(test, selector) {
   return message;
 }
 function valid(detailRegExp, value) {
+  // fonction de validation de regex
   let testRegExp = new RegExp(detailRegExp);
   let test = testRegExp.test(value);
   return test;
 }
+//fonction pour les calcul de quantité et de prix
 function totalProductsPrice(productQuantity, dataApi) {
   totalPriceProduct = productQuantity * dataApi.price;
   totalPrice += totalPriceProduct;
   document.getElementById("totalPrice").textContent = totalPrice;
 }
-
-//fonction pour les calcul de quantité et de prix
 function totalProductsQuantity(productQuantity) {
   totalQuantity += parseInt(productQuantity);
   document.getElementById("totalQuantity").textContent = totalQuantity;
@@ -339,7 +356,6 @@ function changeQuantity(productId, productColor) {
     });
   });
 }
-
 function recalculPrice() {
   let newPrice = 0;
   for (const item of productInLocalStorage) {
@@ -367,6 +383,7 @@ function recalculQuantity() {
   return newQuantity;
 }
 
+//fonction pour la suppression d'un produit
 function deletProduct() {
   let deletProduct = document.querySelectorAll(".deleteItem");
   deletProduct.forEach((item) => {
