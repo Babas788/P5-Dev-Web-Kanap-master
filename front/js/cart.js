@@ -6,7 +6,7 @@ let totalPriceProduct = 0;
 let totalQuantity = 0;
 let messageErrorQuantity = false;
 
-if (productInLocalStorage === "0" || productInLocalStorage == null) {
+if (productInLocalStorage === "0" || productInLocalStorage === null) {
   alert("votre panier est vide, redirection vers la page d'accueil");
   window.location.href = `index.html`;
 } else {
