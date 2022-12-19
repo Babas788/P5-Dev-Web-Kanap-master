@@ -5,7 +5,10 @@ const id = new URL(window.location.href).searchParams.get("id");
 const myUrl = `http://localhost:3000/api/products/${id}`;
 fetch(myUrl)
   .then((response) => response.json())
-  .then((products) => create(products));
+  .then((products) => create(products))
+  .catch((error) => {
+    console.log(error);
+  });
 
 // fonction générale de création
 function create(products) {

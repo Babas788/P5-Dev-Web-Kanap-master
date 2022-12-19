@@ -20,6 +20,9 @@ fetch("http://localhost:3000/api/products")
       totalProductsPrice(productQuantity, dataApi);
       totalProductsQuantity(productQuantity);
     }
+  })
+  .catch((error) => {
+    console.log(error);
   });
 
 function create(productId, productColor, productQuantity, dataApi) {
@@ -221,6 +224,9 @@ function postForm() {
         if (productInLocalStorage) {
           document.location.href = "confirmation.html?id=" + data.orderId;
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   });
 }

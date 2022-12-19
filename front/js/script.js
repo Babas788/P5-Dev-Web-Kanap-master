@@ -2,7 +2,10 @@
 let url = "http://localhost:3000/api/products";
 fetch(url)
   .then((response) => response.json())
-  .then((products) => create(products));
+  .then((products) => create(products))
+  .catch((error) => {
+    console.log(error);
+  });
 
 // création html pour chaque produit à l'aide d'une boucle
 function create(products) {
