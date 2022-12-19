@@ -292,7 +292,7 @@ function totalProductsQuantity(productQuantity) {
 
 //fonction pour les mise à jour de prix et de quantitée
 function changeQuantity(productId, productColor) {
-  let buttonQuantity = document.querySelectorAll(".itemQuantity");
+  let buttonQuantity = document.querySelectorAll("itemQuantity");
   buttonQuantity.forEach((item) => {
     item.addEventListener("change", (event) => {
       event.preventDefault();
@@ -360,10 +360,8 @@ function deletProduct(productId, productColor) {
     item.addEventListener("click", (event) => {
       event.preventDefault();
       let myArticle = item.closest("article");
-      const id = productId;
-      const color = productColor;
       productInLocalStorage = productInLocalStorage.filter(
-        (item) => item.myId !== id || item.colors !== color
+        (item) => item.myId !== productId || item.colors !== productColor
       );
       localStorage.setItem(
         "productCart",
@@ -378,7 +376,8 @@ function deletProduct(productId, productColor) {
         productInLocalStorage === null ||
         productInLocalStorage.length === 0
       ) {
-        alert("votre panier est vide");
+        alert("votre panier est vide, redirection vers la page d'accueil");
+        window.location.href = `index.html`;
       } else {
         recalculQuantity();
         recalculPrice();
