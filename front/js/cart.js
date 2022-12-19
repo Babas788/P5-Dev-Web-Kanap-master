@@ -41,7 +41,7 @@ if (productInLocalStorage === "0" || productInLocalStorage == null) {
     article.appendChild(image(dataApi));
     article.appendChild(cartItem(productColor, productQuantity, dataApi));
     changeQuantity(productId, productColor);
-    deletProduct(productId, productColor);
+    deletProduct();
   }
 
   function image(dataApi) {
@@ -354,14 +354,16 @@ function recalculQuantity() {
   return newQuantity;
 }
 
-function deletProduct(productId, productColor) {
+function deletProduct() {
   let deletProduct = document.querySelectorAll(".deleteItem");
   deletProduct.forEach((item) => {
     item.addEventListener("click", (event) => {
       event.preventDefault();
       let myArticle = item.closest("article");
       productInLocalStorage = productInLocalStorage.filter(
-        (item) => item.myId !== productId || item.colors !== productColor
+        (item) =>
+          item.myId !== myArticle.dataset.id ||
+          item.colors !== myArticle.dataset.color
       );
       localStorage.setItem(
         "productCart",
