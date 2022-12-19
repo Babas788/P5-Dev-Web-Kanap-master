@@ -6,6 +6,12 @@ let totalPriceProduct = 0;
 let totalQuantity = 0;
 let messageErrorQuantity = false;
 
+let email = document.getElementById("email");
+let firstName = document.getElementById("firstName");
+let lastName = document.getElementById("lastName");
+let address = document.getElementById("address");
+let city = document.getElementById("city");
+
 if (productInLocalStorage === "0" || productInLocalStorage === null) {
   alert("votre panier est vide, redirection vers la page d'accueil");
   window.location.href = `index.html`;
@@ -136,11 +142,6 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
 
 form();
 function form() {
-  const email = document.getElementById("email");
-  const firstName = document.getElementById("firstName");
-  const lastName = document.getElementById("lastName");
-  const address = document.getElementById("address");
-  const city = document.getElementById("city");
   //création d'évènement pour chaque input
   email.addEventListener("change", () => {
     validEmail();
@@ -160,7 +161,7 @@ function form() {
 
   function validEmail() {
     //test de la value de l'input selon la regexp
-    const testEmail = valid(
+    let testEmail = valid(
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
       email.value
     );
@@ -168,23 +169,23 @@ function form() {
     return testEmail;
   }
   function validFirstName() {
-    const testFirstName = valid("^[a-zA-Z]+$", firstName.value);
+    let testFirstName = valid("^[a-zA-Z]+$", firstName.value);
     errorMessage(testFirstName, "#firstNameErrorMsg");
     return testFirstName;
   }
 
   function validLastName() {
-    const testLastName = valid("^[a-zA-Z]+$", lastName.value);
+    let testLastName = valid("^[a-zA-Z]+$", lastName.value);
     errorMessage(testLastName, "#lastNameErrorMsg");
     return testLastName;
   }
   function validAddress() {
-    const testAddress = valid("^[0-9a-z]", address.value);
+    let testAddress = valid("^[0-9a-z]", address.value);
     errorMessage(testAddress, "#addressErrorMsg");
     return testAddress;
   }
   function validCity() {
-    const testCity = valid("^[A-Za-z]", city.value);
+    let testCity = valid("^[A-Za-z]", city.value);
     errorMessage(testCity, "#cityErrorMsg");
     return testCity;
   }
@@ -195,46 +196,58 @@ function form() {
 function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
-    e.preventDefault();
-    const contact = {
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
-      address: document.getElementById("address").value,
-      city: document.getElementById("city").value,
-      email: document.getElementById("email").value,
-    };
+    if (
+      !firstName.value ||
+      !lastName.value ||
+      !address.value ||
+      !city.value ||
+      !email.value
+    ) {
+      alert(
+        "Veuillez vérifier les champs du formulaire et les remplir correctement !"
+      );
+    } else {
+      const contact = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email: document.getElementById("email").value,
+      };
 
-    // je récupère les données du formulaire dans un objet
+      // je récupère les données du formulaire dans un objet
 
-    //récupération de l'iD
-    let products = [];
-    for (let i = 0; i < productInLocalStorage.length; i++) {
-      products.push(productInLocalStorage[i].myId);
-    }
+      //récupération de l'iD
+      let products = [];
+      for (let i = 0; i < productInLocalStorage.length; i++) {
+        products.push(productInLocalStorage[i].myId);
+      }
 
-    const finalOrder = {
-      contact,
-      products,
-    };
+      const finalOrder = {
+        contact,
+        products,
+      };
 
-    fetch("http://localhost:3000/api/products/order", {
-      method: "POST",
-      body: JSON.stringify(finalOrder),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (productInLocalStorage) {
-          document.location.href = "confirmation.html?id=" + data.orderId;
-        }
+      fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        body: JSON.stringify(finalOrder),
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (productInLocalStorage) {
+            document.location.href = "confirmation.html?id=" + data.orderId;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   });
 }
+
 postForm();
 
 function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
