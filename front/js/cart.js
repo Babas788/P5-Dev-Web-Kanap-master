@@ -200,7 +200,7 @@ function form() {
     return testCity;
   }
 }
-
+postForm();
 function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
@@ -215,6 +215,7 @@ function postForm() {
       alert(
         "Veuillez vérifier les champs du formulaire et les remplir correctement !"
       );
+      e.preventDefault();
     } else {
       const contact = {
         //création d'objet afin de pouvoir sérialiser
@@ -259,8 +260,6 @@ function postForm() {
     }
   });
 }
-
-postForm();
 
 //fonctions réutilisables
 function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
