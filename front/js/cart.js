@@ -100,6 +100,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
       (alt = null),
       dataApi.price + "€"
     );
+
     divCartItem.appendChild(divCartItemDescription);
     divCartItem.appendChild(cartSettings(productQuantity));
     divCartItemDescription.appendChild(title);
@@ -140,6 +141,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
       (alt = null),
       "Supprimer"
     );
+
     divSettings.appendChild(settingsQuantity);
     settingsQuantity.appendChild(qte);
     settingsQuantity.appendChild(input);
@@ -151,7 +153,6 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
 
 // FORMULAIRE
 
-form();
 function form() {
   //création d'évènement pour chaque input de contact
   email.addEventListener("change", () => {
@@ -201,10 +202,11 @@ function form() {
     return testCity;
   }
 }
-postForm();
+form();
 function postForm() {
   const order = document.getElementById("order");
   order.addEventListener("click", (e) => {
+    e.preventDefault();
     if (
       //si il n'y pas de value au formulaire alert sinon post du produit ainsi des données contact
       !firstName.value ||
@@ -261,7 +263,7 @@ function postForm() {
     }
   });
 }
-
+postForm();
 //fonctions réutilisables
 function createArticleProduct(balise, elementClass, dataSetId, dataSetColor) {
   // fonction article création
