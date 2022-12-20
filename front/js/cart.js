@@ -55,7 +55,7 @@ if (productInLocalStorage === "0" || productInLocalStorage === null) {
     cart.appendChild(article);
     article.appendChild(image(dataApi));
     article.appendChild(cartItem(productColor, productQuantity, dataApi));
-    changeQuantity(productId, productColor);
+    changeQuantity();
     deletProduct();
   }
 
@@ -321,16 +321,17 @@ function totalProductsQuantity(productQuantity) {
 }
 
 //fonction pour les mise à jour de prix et de quantitée
-function changeQuantity(productId, productColor) {
+function changeQuantity() {
   let buttonQuantity = document.querySelectorAll(".itemQuantity");
   buttonQuantity.forEach((item) => {
     item.addEventListener("change", (event) => {
       event.preventDefault();
-      const id = productId;
-      const color = productColor;
+      let myArticle = item.closest("article");
       newQuantity = Number(item.value);
       const product = productInLocalStorage.find(
-        (element) => element.myId === id && element.colors === color
+        (element) =>
+          element.myId === myArticle.dataset.id &&
+          element.colors === myArticle.dataset.color
       );
       if (
         //quantité comprise entre 1 et 100
