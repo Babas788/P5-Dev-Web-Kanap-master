@@ -7,6 +7,12 @@ let totalPriceProduct = 0;
 let totalQuantity = 0;
 let messageErrorQuantity = false;
 
+let emailErrorMsg = true;
+let lastNameErrorMsg = true;
+let cityErrorMsg = true;
+let addressErrorMsg = true;
+let firstNameNameErrorMsg = true;
+
 // déclaration de variables pour le formulaire de saisie de contact - definition de variables général car utilité dans deux fonctions
 let email = document.getElementById("email");
 let firstName = document.getElementById("firstName");
@@ -176,28 +182,68 @@ function form() {
       "^[a-zA-Z0-9.-_-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
       email.value
     );
-    errorMessage(testEmail, "#emailErrorMsg"); //message suite au test de la regex
+    const selectlastName = document.getElementById("emailErrorMsg");
+    if (testEmail) {
+      selectlastName.textContent = "";
+      emailErrorMsg = true;
+    } else {
+      selectlastName.textContent = "Veuillez entrer une information valide";
+      emailErrorMsg = false;
+      return;
+    }
     return testEmail;
   }
   function validFirstName() {
     let testFirstName = valid("^[a-zA-Z]+$", firstName.value);
-    errorMessage(testFirstName, "#firstNameErrorMsg");
+    const selectlastName = document.getElementById("firstNameErrorMsg");
+    if (testFirstName) {
+      selectlastName.textContent = "";
+      firstNameErrorMsg = true;
+    } else {
+      selectlastName.textContent = "Veuillez entrer une information valide";
+      firstNameErrorMsg = false;
+      return;
+    }
     return testFirstName;
   }
 
   function validLastName() {
     let testLastName = valid("^[a-zA-Z]+$", lastName.value);
-    errorMessage(testLastName, "#lastNameErrorMsg");
+    const selectlastName = document.getElementById("lastNameErrorMsg");
+    if (testLastName) {
+      selectlastName.textContent = "";
+      lastNameErrorMsg = true;
+    } else {
+      selectlastName.textContent = "Veuillez entrer une information valide";
+      lastNameErrorMsg = false;
+      return;
+    }
     return testLastName;
   }
   function validAddress() {
     let testAddress = valid("^[0-9a-z]", address.value);
-    errorMessage(testAddress, "#addressErrorMsg");
+    const selectlastName = document.getElementById("addressErrorMsg");
+    if (testAddress) {
+      selectlastName.textContent = "";
+      lastNameErrorMsg = true;
+    } else {
+      selectlastName.textContent = "Veuillez entrer une information valide";
+      lastNameErrorMsg = false;
+      return;
+    }
     return testAddress;
   }
   function validCity() {
     let testCity = valid("^[A-Za-z]", city.value);
-    errorMessage(testCity, "#cityErrorMsg");
+    const selectlastName = document.getElementById("cityErrorMsg");
+    if (testCity) {
+      selectlastName.textContent = "";
+      cityErrorMsg = true;
+    } else {
+      selectlastName.textContent = "Veuillez entrer une information valide";
+      cityErrorMsg = false;
+      return;
+    }
     return testCity;
   }
 }
@@ -218,6 +264,14 @@ function postForm() {
         "Veuillez vérifier les champs du formulaire et les remplir correctement !"
       );
       e.preventDefault();
+    } else if (
+      lastNameErrorMsg === false ||
+      emailErrorMsg === false ||
+      firstNameNameErrorMsg === false ||
+      addressErrorMsg === false ||
+      cityErrorMsg === false
+    ) {
+      alert("Veuillez completer les champs correctement");
     } else {
       const contact = {
         //création d'objet afin de pouvoir sérialiser
@@ -295,12 +349,13 @@ function createInput(balise, type, className, inputName, inputValue) {
 }
 function errorMessage(test, selector) {
   // fonction pour le message d'erreur regex
-  const message = document.querySelector(selector);
+  let message = document.querySelector(selector);
   //message d'erreur ou non
   if (test) {
     message.textContent = "";
   } else {
     message.textContent = "Veuillez entrer une information valide";
+    return;
   }
   return message;
 }
